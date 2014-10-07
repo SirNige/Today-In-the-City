@@ -27,23 +27,28 @@ public final class R {
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
+        public static final int splash1=0x7f020001;
+        public static final int splash2=0x7f020002;
     }
     public static final class id {
-        public static final int action_create=0x7f080011;
-        public static final int action_search=0x7f080012;
-        public static final int action_search2=0x7f080013;
-        public static final int action_settings=0x7f080010;
-        public static final int button1=0x7f08000d;
-        public static final int button2=0x7f08000e;
-        public static final int button3=0x7f08000c;
+        public static final int action_create=0x7f080014;
+        public static final int action_search=0x7f080015;
+        public static final int action_search2=0x7f080016;
+        public static final int action_settings=0x7f080013;
+        public static final int button1=0x7f08000e;
+        public static final int button2=0x7f08000f;
+        public static final int button3=0x7f08000d;
         public static final int editText1=0x7f080001;
         public static final int editText2=0x7f080003;
         public static final int editText3=0x7f080005;
         public static final int editText4=0x7f080007;
         public static final int editText5=0x7f080009;
-        public static final int expandableListView1=0x7f08000a;
-        public static final int linearLayout1=0x7f08000b;
-        public static final int listView1=0x7f08000f;
+        public static final int expandableListView1=0x7f08000b;
+        public static final int lblListHeader=0x7f080011;
+        public static final int lblListItem=0x7f080012;
+        public static final int linearLayout1=0x7f08000c;
+        public static final int listView1=0x7f080010;
+        public static final int relativeLayout1=0x7f08000a;
         public static final int textView1=0x7f080000;
         public static final int textView2=0x7f080002;
         public static final int textView3=0x7f080004;
@@ -54,6 +59,9 @@ public final class R {
         public static final int activity_create=0x7f030000;
         public static final int activity_main=0x7f030001;
         public static final int activity_search=0x7f030002;
+        public static final int list_group=0x7f030003;
+        public static final int list_item=0x7f030004;
+        public static final int splash=0x7f030005;
     }
     public static final class menu {
         public static final int create=0x7f070000;
