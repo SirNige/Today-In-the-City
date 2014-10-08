@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-
-
 public class Splash extends Activity {
 
 	@Override
@@ -19,7 +17,7 @@ public class Splash extends Activity {
 				try {
 					int logoTimer = 0;
 					while(logoTimer < 5000) {
-						sleep(100);
+						sleep(1);
 						logoTimer += 100;
 					}
 					startActivity(new Intent("com.KNASK.todayinthecity.CLEARSCREEN"));

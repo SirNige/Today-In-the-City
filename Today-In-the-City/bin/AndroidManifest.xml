@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="16"
-        android:targetSdkVersion="16" />
+        android:minSdkVersion="17"
+        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
@@ -38,6 +38,14 @@
         <activity
             android:name=".CreateActivity"
             android:label="@string/title_activity_create" >
+        </activity>
+        <activity
+            android:name=".ShowsActivity"
+            android:label="@string/title_activity_shows" >
+        </activity>
+        <activity
+            android:name=".CreateBand"
+            android:label="@string/title_activity_create_band" >
         </activity>
     </application>
 

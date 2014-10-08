@@ -1,9 +1,12 @@
 package com.KNASK.todayinthecity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
 public class SearchActivity extends Activity {
 
@@ -17,6 +20,26 @@ public class SearchActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.search, menu);
+		
+        MenuItem searchItem = menu.findItem(R.id.action_search2);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        
+        if(searchView != null){
+	        searchView.setOnQueryTextListener(new OnQueryTextListener() {
+	    	    @Override
+	    	    public boolean onQueryTextSubmit(String query) {
+	    			Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+	    			startActivity(i);
+	    	        return true;
+	    	    }
+	
+	    		@Override
+	    		public boolean onQueryTextChange(String arg0) {
+	    			return true;
+	    		}
+	    	});
+        } 
+		
 		return true;
 	}
 

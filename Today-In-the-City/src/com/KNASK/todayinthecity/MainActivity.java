@@ -6,10 +6,13 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
 public class MainActivity extends Activity {
 
@@ -27,30 +30,44 @@ public class MainActivity extends Activity {
         prepareListData();
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
         expListView.setAdapter(listAdapter);
+        expListView.expandGroup(0);
+             
+	}
+	
+	public void nearMe(View view) {
+		Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+		startActivity(i);
+	}
+	
+	public void myShows(View view) {
+		Intent i = new Intent(getApplicationContext(), ShowsActivity.class);
+		startActivity(i);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
+		
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        
+        if(searchView != null){
+	        searchView.setOnQueryTextListener(new OnQueryTextListener() {
+	    	    @Override
+	    	    public boolean onQueryTextSubmit(String query) {
+	    			Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+	    			startActivity(i);
+	    	        return true;
+	    	    }
+	
+	    		@Override
+	    		public boolean onQueryTextChange(String arg0) {
+	    			return true;
+	    		}
+	    	});
+        } 
+		
 		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	        case R.id.action_search:
-	            openSearch();
-	            return true;
-	        case R.id.action_search2:
-	        	openSearch();
-	        	return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
-	}
-
-	private void openSearch() {
-	    Toast.makeText(this, "Search button pressed", Toast.LENGTH_SHORT).show();
 	}
 
     private void prepareListData() {
