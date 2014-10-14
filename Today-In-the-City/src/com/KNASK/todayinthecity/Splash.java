@@ -17,7 +17,7 @@ public class Splash extends Activity {
 				try {
 					int logoTimer = 0;
 					while(logoTimer < 5000) {
-						sleep(1);
+						sleep(100);
 						logoTimer += 100;
 					}
 					startActivity(new Intent("com.KNASK.todayinthecity.CLEARSCREEN"));
