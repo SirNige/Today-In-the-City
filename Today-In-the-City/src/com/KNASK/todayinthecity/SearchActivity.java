@@ -8,9 +8,15 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.Activity;
@@ -26,11 +32,14 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
-public class SearchActivity extends FragmentActivity implements LocationListener {
+public class SearchActivity extends FragmentActivity implements LocationListener{
 
 	private GoogleMap googleMap;
 	public  ArrayList<ShowEvent> showEvents; 
@@ -84,6 +93,46 @@ public class SearchActivity extends FragmentActivity implements LocationListener
             addTestEvent();
             
             addMarkersToMap();
+            
+            
+            googleMap.setInfoWindowAdapter(new InfoWindowAdapter() {
+            	 
+                // Use default InfoWindow frame
+                @Override
+                public View getInfoWindow(Marker arg0) {
+                    return null;
+                }
+     
+                // Defines the contents of the InfoWindow
+                @Override
+                public View getInfoContents(Marker marker) {
+     
+                    // Getting view from the layout file info_window_layout
+                    View v = getLayoutInflater().inflate(R.layout.show_info_contents, null);
+        
+                    // Getting reference to the TextView to set show name
+                    TextView tvTitle = (TextView) v.findViewById(R.id.showname);
+                    // Getting reference to the TextView to set show date
+                    TextView tvDate = (TextView) v.findViewById(R.id.showdate);
+                    // Getting reference to the TextView to set show place
+                    TextView tvPlace = (TextView) v.findViewById(R.id.place);
+     
+                    ShowEvent showEvent = showEvents.get(Integer.parseInt(marker.getSnippet()));
+                    
+                    // Setting the ShowTitle
+                    tvTitle.setText(showEvent.GetShowTitle());
+     
+                    // Setting the ShowDate
+                    tvDate.setText(showEvent.GetShowDate());
+     
+                    // Setting the LocationName
+                    tvPlace.setText(showEvent.GetLocationName());
+     
+                    // Returning the view containing InfoWindow contents
+                    return v;
+     
+                }
+            });
             
         }
 	}
@@ -167,19 +216,22 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 	// It should be retrieved from Database.
 	public void addTestEvent() {
 		String[][] data = {
-				  {"Algonquin College", "1385 Woodroffe Ave, Ottawa"},
-				  {"Mayfair Theatre Ottawa", "1074 Bank Street, Ottawa"},
-				  {"Canadian Film Institute", "395 Rue Wellington, Ottawa"},
-				  {"Landmark 7 Ottawa",   "111 Albert Street, Ottawa"},
-				  {"Ottawa Family Cinema",   "710 Broadview Ave, Ottawa"},
-				  {"Cineplex Odeon South Keys",   "2214 Bank Street, Ottawa"}
+				  {"Crazy Halloween Night!", "7:00PM Fri Oct 31, 2014", "Algonquin College", "1385 Woodroffe Ave, Ottawa"},
+				  {"Raging Nathans Finderskeepers and Dead Weights", "2:00PM Tue Oct 14, 2014", "Mayfair Theatre Ottawa", "1074 Bank Street, Ottawa"},
+				  {"Loreena McKennitt", "7:00PM Sun Oct 31, 2014", "Canadian Film Institute", "395 Rue Wellington, Ottawa"},
+				  {"LIGHTS", "7:00PM Wed Nov 30, 2014", "Landmark 7 Ottawa",   "111 Albert Street, Ottawa"},
+				  {"Audible Obsession", "7:00PM Sat Oct 16, 2014", "Ottawa Family Cinema",   "710 Broadview Ave, Ottawa"},
+				  {"Unearth", "7:00PM Mon Oct 27, 2014", "Cineplex Odeon South Keys",   "2214 Bank Street, Ottawa"}
 				};
 		
 		for(int i = 0; i < data.length ; i++) {
 			ShowEvent showEvent = new ShowEvent();
 			
-			showEvent.locationName = data[i][0];
-			showEvent.locationAddress = data[i][1];
+			showEvent.SetShowTitle(data[i][0]);
+			showEvent.SetShowDate(data[i][1]);
+			showEvent.SetLocationName(data[i][2]);
+			showEvent.SetLocationAddress(data[i][3]);
+
 			showEvents.add(showEvent);
 		}
 		
@@ -195,25 +247,24 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 	    Double latitude, longitude;
 	    
 	    if (!showEvents.isEmpty()) {
+	    	int num = 0;
 	    	for (ShowEvent showEvent: showEvents) {
 	            try {
-	            	System.out.println("Name=" + showEvent.locationName + ", Location=" + showEvent.locationAddress);
-	                addressList = geoCoder.getFromLocationName(showEvent.locationAddress, 1);
+	                addressList = geoCoder.getFromLocationName(showEvent.GetLocationAddress(), 1);
 	                if (addressList == null || addressList.isEmpty() || addressList.equals("")) {
 	                    addressList = geoCoder.getFromLocationName("Algonquin College", 1);
 	                }
 	                latitude = addressList.get(0).getLatitude();
 	                longitude = addressList.get(0).getLongitude();
-	                
-	            	System.out.println("Name=" + showEvent.locationName + ", Location=" + showEvent.locationAddress);
-	                
+	                           
 	            	googleMap.addMarker(new MarkerOptions()
 	                          .position(new LatLng(latitude, longitude))
-	                          .title(showEvent.locationName)
-	                          .snippet(showEvent.locationAddress)
+	                          .title(showEvent.GetLocationName())
+	                          .snippet(""+ num++)
 	                          .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
 	                          .alpha(0.7f)
 	                );
+
 	            } catch (Exception e) {
 	                e.printStackTrace();
 	            } // end catch
