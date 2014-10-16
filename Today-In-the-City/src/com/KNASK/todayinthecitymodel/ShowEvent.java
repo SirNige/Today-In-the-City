@@ -1,4 +1,7 @@
-package com.KNASK.todayinthecity;
+package com.KNASK.todayinthecitymodel;
+
+
+import java.math.BigDecimal;
 
 import android.graphics.Bitmap;
 
@@ -6,12 +9,12 @@ import android.graphics.Bitmap;
 public class ShowEvent {
 	
 	private String 	showDate;
-	private Genre 	genre;
+	private Band	band;
 	private String 	showTitle;
 	private String 	showID;
 	private String 	locationName;
 	private String 	locationAddress;
-	private Integer 	entranceFee;
+	private BigDecimal     	entranceFee;
 	private Bitmap 	eventPoster;
 	private String 	description;
 	private String 	contactEmail;
@@ -19,8 +22,8 @@ public class ShowEvent {
 	private String 	webSite;
 	private String 	ageGroup;
 	
-	public ShowEvent() {
-
+	public ShowEvent(Band band) {
+		this.band = band;
 	}
 	
 	//////////////////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-package com.KNASK.todayinthecity;
+package com.KNASK.todayinthecitymodel;
 
 public enum Genre {
 	ROCK,
