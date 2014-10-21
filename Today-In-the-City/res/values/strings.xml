@@ -7,5 +7,7 @@
     <string name="title_activity_create">CreateActivity</string>
     <string name="title_activity_shows">ShowsActivity</string>
     <string name="title_activity_create_band">CreateBand</string>
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

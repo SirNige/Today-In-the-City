@@ -121,18 +121,33 @@ public class SearchActivity extends FragmentActivity implements LocationListener
                     ShowEvent showEvent = showEvents.get(Integer.parseInt(marker.getSnippet()));
                     
                     // Setting the ShowTitle
-                    tvTitle.setText(showEvent.GetShowTitle());
+                    tvTitle.setText(showEvent.getShowTitle());
      
                     // Setting the ShowDate
-                    tvDate.setText(showEvent.GetShowDate());
+                    tvDate.setText(showEvent.getShowDate());
      
                     // Setting the LocationName
-                    tvPlace.setText(showEvent.GetLocationName());
+                    tvPlace.setText(showEvent.getLocationName());
      
                     // Returning the view containing InfoWindow contents
                     return v;
      
                 }
+            });
+            
+            //info window click event
+            googleMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+         	   @Override
+
+        	   public void onInfoWindowClick(Marker marker) {
+         		   	ShowEvent showEvent = showEvents.get(Integer.parseInt(marker.getSnippet()));
+				
+					Intent intent = new Intent(SearchActivity.this, DetailsActivity.class);
+					
+					intent.putExtra("SHOWEVENT", showEvent);
+					startActivity(intent);		  
+
+        	   }
             });
             
         }
@@ -228,10 +243,10 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 		for(int i = 0; i < data.length ; i++) {
 			ShowEvent showEvent = new ShowEvent();
 			
-			showEvent.SetShowTitle(data[i][0]);
-			showEvent.SetShowDate(data[i][1]);
-			showEvent.SetLocationName(data[i][2]);
-			showEvent.SetLocationAddress(data[i][3]);
+			showEvent.setShowTitle(data[i][0]);
+			showEvent.setShowDate(data[i][1]);
+			showEvent.setLocationName(data[i][2]);
+			showEvent.setLocationAddress(data[i][3]);
 
 			showEvents.add(showEvent);
 		}
@@ -251,7 +266,7 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 	    	int num = 0;
 	    	for (ShowEvent showEvent: showEvents) {
 	            try {
-	                addressList = geoCoder.getFromLocationName(showEvent.GetLocationAddress(), 1);
+	                addressList = geoCoder.getFromLocationName(showEvent.getLocationAddress(), 1);
 	                if (addressList == null || addressList.isEmpty() || addressList.equals("")) {
 	                    addressList = geoCoder.getFromLocationName("Algonquin College", 1);
 	                }
@@ -260,7 +275,7 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 	                           
 	            	googleMap.addMarker(new MarkerOptions()
 	                          .position(new LatLng(latitude, longitude))
-	                          .title(showEvent.GetLocationName())
+	                          .title(showEvent.getLocationName())
 	                          .snippet(""+ num++)
 	                          .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
 	                          .alpha(0.7f)

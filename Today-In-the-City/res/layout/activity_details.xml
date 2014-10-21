@@ -1,0 +1,205 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+ 
+    tools:context="com.KNASK.todayinthecity.DetailsActivity" >
+          
+    <!-- android:paddingBottom="@dimen/activity_vertical_margin"-->
+    <!-- android:paddingLeft="@dimen/activity_horizontal_margin"-->
+    <!-- android:paddingRight="@dimen/activity_horizontal_margin"-->
+    <!-- android:paddingTop="@dimen/activity_vertical_margin"-->
+    
+
+
+   <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.31"
+        android:orientation="vertical" >
+
+        <!-- should be come poster of show -->
+        <ImageView
+            android:id="@+id/detailEvent_showPoster"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:src="@drawable/splash2" />
+
+		 <TableLayout 
+		    android:id="@+id/DetailShowtableLayout"
+		    android:layout_width="wrap_content"
+		    android:layout_height="match_parent"
+		    android:shrinkColumns="*"
+		    android:stretchColumns="*">
+		 
+		     <!-- Show Title -->
+		    <TableRow
+		        android:id="@+id/DetailShowtableRow1"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center_horizontal" 
+		        android:padding="1dp">
+		 
+		        <TextView
+		            android:id="@+id/detailEvent_showtitle"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_span="2"
+		            android:gravity="center"
+		            android:text="Show Title"
+		            android:textSize="16dp"
+		            android:textStyle="bold" 
+		            android:textColor="@color/wallet_holo_blue_light"
+		            android:background="@color/wallet_dim_foreground_inverse_holo_dark">
+		        </TextView>
+		    </TableRow>
+		 
+		    <!-- Show Date -->
+		    <TableRow
+		        android:id="@+id/DetailShowtableRow2"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content" 
+		        android:padding="2dp">	 
+		        <TextView
+		            android:id="@+id/detailEvent_text1"
+		            android:text="Show Date "
+		            android:gravity="right"
+		            android:textStyle="bold" 
+		            android:layout_weight=".25">
+		        </TextView>	 
+		        <TextView
+		            android:id="@+id/detailEvent_showDate"
+		            android:gravity="left"
+		            android:textColor="@color/wallet_holo_blue_light"
+		            android:text="  " >
+		        </TextView>
+		    </TableRow>
+		    
+      		<!-- Location -->
+		    <TableRow
+		        android:id="@+id/DetailShowtableRow3"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content" 
+		        android:padding="2dp">	 
+		        <TextView
+		            android:id="@+id/detailEvent_text2"
+		            android:text="Location "
+		            android:gravity="right"		            
+		            android:textStyle="bold" 
+		            android:layout_weight=".25">
+		        </TextView>	 
+		        <TextView
+		            android:id="@+id/detailEvent_locationName"
+		            android:gravity="left"
+		            android:textColor="@color/wallet_holo_blue_light"
+		            android:text=" " >
+		        </TextView>
+		    </TableRow>    
+	
+      		<!-- Buy Tickets -->
+		    <TableRow
+		        android:id="@+id/DetailShowtableRow4"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content" 
+		        android:padding="2dp">	 
+		        <TextView
+		            android:id="@+id/detailEvent_text3"
+		            android:text="Buy Tickets "
+		            android:gravity="right"
+		            android:textStyle="bold" 
+		            android:layout_weight=".25">
+		        </TextView>	 
+		        <TextView
+		            android:id="@+id/detailEvent_entranceFee"
+		            android:gravity="left"
+		            android:textColor="@color/wallet_holo_blue_light"
+		            android:text=" " >
+		        </TextView>
+		    </TableRow>  		        
+		    
+		    <!-- contactEmail -->
+		    <TableRow
+		        android:id="@+id/DetailShowtableRow5"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content" 
+		        android:padding="2dp">	 
+		        <TextView
+		            android:id="@+id/detailEvent_text4"
+		            android:text="Contact "
+		            android:gravity="right"
+		            android:textStyle="bold" 
+		            android:layout_weight=".25">
+		        </TextView>	 
+		        <TextView
+		            android:id="@+id/detailEvent_email"
+		            android:gravity="left"
+		            android:autoLink="email"
+		            android:text="sdlee71@gmail.com" >
+		        </TextView>
+		    </TableRow>  
+		     		    
+		    <!-- contactPhone -->
+		   <TableRow
+		        android:id="@+id/DetailShowtableRow6"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content" 
+		        android:padding="2dp">	 
+		        <TextView
+		            android:id="@+id/detailEvent_text5"
+		            android:text=""
+		            android:textStyle="bold" 
+		            android:layout_weight=".25">
+		        </TextView>	
+
+		        <TextView
+		            android:id="@+id/detailEvent_phone"
+		            android:gravity="left"
+		            android:autoLink="phone"
+		            android:text="6139998888" >
+		            
+		        </TextView>
+		    </TableRow>   
+		     		    
+		    <!-- Website -->
+		    <TableRow
+		        android:id="@+id/DetailShowtableRow7"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content" 
+		        android:padding="2dp">	 
+		        <TextView
+		            android:id="@+id/detailEvent_text6"
+		            android:text=""
+		            android:textStyle="bold" 
+		            android:layout_weight=".25">
+		        </TextView>	 
+		        <TextView
+		            android:id="@+id/detailEvent_website"
+		            android:gravity="left"
+		            android:autoLink="web"
+		            android:text="www.algonquincollege.com" >
+		        </TextView>
+		    </TableRow>   
+		    		    		    	 
+			<!-- description -->
+		    <TableRow
+		        android:id="@+id/DetailShowtableRow8"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center_horizontal" >
+		 
+		        <TextView
+		            android:id="@+id/detailEvent_showDescription"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_span="2"
+		            android:gravity="left"
+		            android:textColor="@color/wallet_holo_blue_light"		            
+		            android:text="Description" 
+		            >
+		        </TextView>
+		    </TableRow>		    
+      </TableLayout>
+               
+    </LinearLayout>
+
+</RelativeLayout>
