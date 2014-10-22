@@ -1,6 +1,7 @@
 package com.KNASK.todayinthecitymodel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 
@@ -22,11 +23,18 @@ public class ShowEvent implements Serializable  {
 	private String 	contactPhone;
 	private String 	webSite;
 	private String 	ageGroup;
+	private ArrayList<Band> bandList;
 	
 	public ShowEvent() {
-
+		bandList = new ArrayList<Band>();
+	}
+	
+	//add line up of band for this show
+	public void addBand(Band band) {
+		bandList.add(band);
 	}
 
+	//getter and setter functions
 	public String getShowDate() {
 		return showDate;
 	}
