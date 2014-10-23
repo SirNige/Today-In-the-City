@@ -3,12 +3,15 @@ package com.KNASK.todayinthecitymodel;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import android.app.Application;
 import android.graphics.Bitmap;
 
 
 //To store the event information
 //It will be stored detail information of the show event from database.
-public class ShowEvent implements Serializable  {
+public class ShowEvent extends Application implements Serializable  {
+	
+	public ArrayList<ShowEvent> showEventList;
 	
 	private String 	showDate;
 	private Genre 	genre;
@@ -26,7 +29,14 @@ public class ShowEvent implements Serializable  {
 	private ArrayList<Band> bandList;
 	
 	public ShowEvent() {
+	
 		bandList = new ArrayList<Band>();
+
+	}
+	
+	//add a show
+	public void addShowEvent(ShowEvent showEvent) {
+		showEventList.add(showEvent);
 	}
 	
 	//add line up of band for this show

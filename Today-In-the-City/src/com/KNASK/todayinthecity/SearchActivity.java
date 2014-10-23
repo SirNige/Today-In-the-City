@@ -43,14 +43,15 @@ import android.widget.Toast;
 public class SearchActivity extends FragmentActivity implements LocationListener{
 
 	private GoogleMap googleMap;
-	public  ArrayList<ShowEvent> showEvents; 
 	
+	ShowEvent showEvents;
+	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
-		
-		showEvents = new ArrayList<ShowEvent>();
+			
+		showEvents = (ShowEvent) getApplicationContext();
 		
         // Getting Google Play availability status
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
@@ -91,8 +92,6 @@ public class SearchActivity extends FragmentActivity implements LocationListener
             locationManager.requestLocationUpdates(provider, 20000, 0, this);
             
             
-            addTestEvent();
-            
             addMarkersToMap();
             
             
@@ -118,7 +117,7 @@ public class SearchActivity extends FragmentActivity implements LocationListener
                     // Getting reference to the TextView to set show place
                     TextView tvPlace = (TextView) v.findViewById(R.id.place);
      
-                    ShowEvent showEvent = showEvents.get(Integer.parseInt(marker.getSnippet()));
+                    ShowEvent showEvent = showEvents.showEventList.get(Integer.parseInt(marker.getSnippet()));
                     
                     // Setting the ShowTitle
                     tvTitle.setText(showEvent.getShowTitle());
@@ -140,7 +139,7 @@ public class SearchActivity extends FragmentActivity implements LocationListener
          	   @Override
 
         	   public void onInfoWindowClick(Marker marker) {
-         		   	ShowEvent showEvent = showEvents.get(Integer.parseInt(marker.getSnippet()));
+         		   	ShowEvent showEvent = showEvents.showEventList.get(Integer.parseInt(marker.getSnippet()));
 				
 					Intent intent = new Intent(SearchActivity.this, DetailsActivity.class);
 					
@@ -228,30 +227,7 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 		return super.onOptionsItemSelected(item);
 	}
 	
-	/////////////////////////////////////////////////////////////////////////////
-	// It should be retrieved from Database.
-	public void addTestEvent() {
-		String[][] data = {
-				  {"Crazy Halloween Night!", "7:00PM Fri Oct 31, 2014", "Algonquin College", "1385 Woodroffe Ave, Ottawa"},
-				  {"Raging Nathans Finderskeepers and Dead Weights", "2:00PM Tue Oct 14, 2014", "Mayfair Theatre Ottawa", "1074 Bank Street, Ottawa"},
-				  {"Loreena McKennitt", "7:00PM Sun Oct 31, 2014", "Canadian Film Institute", "395 Rue Wellington, Ottawa"},
-				  {"LIGHTS", "7:00PM Wed Nov 30, 2014", "Landmark 7 Ottawa",   "111 Albert Street, Ottawa"},
-				  {"Audible Obsession", "7:00PM Sat Oct 16, 2014", "Ottawa Family Cinema",   "710 Broadview Ave, Ottawa"},
-				  {"Unearth", "7:00PM Mon Oct 27, 2014", "Cineplex Odeon South Keys",   "2214 Bank Street, Ottawa"}
-				};
-		
-		for(int i = 0; i < data.length ; i++) {
-			ShowEvent showEvent = new ShowEvent();
-			
-			showEvent.setShowTitle(data[i][0]);
-			showEvent.setShowDate(data[i][1]);
-			showEvent.setLocationName(data[i][2]);
-			showEvent.setLocationAddress(data[i][3]);
 
-			showEvents.add(showEvent);
-		}
-		
-	}
 	
 	// convert address to lng, lat and add markers to map
 	public void addMarkersToMap() {
@@ -262,9 +238,9 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 	    List<Address> addressList;
 	    Double latitude, longitude;
 	    
-	    if (!showEvents.isEmpty()) {
+	    if (!showEvents.showEventList.isEmpty()) {
 	    	int num = 0;
-	    	for (ShowEvent showEvent: showEvents) {
+	    	for (ShowEvent showEvent: showEvents.showEventList ) {
 	            try {
 	                addressList = geoCoder.getFromLocationName(showEvent.getLocationAddress(), 1);
 	                if (addressList == null || addressList.isEmpty() || addressList.equals("")) {

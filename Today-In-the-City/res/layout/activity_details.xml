@@ -25,12 +25,17 @@
             android:layout_height="150dp"
             android:src="@drawable/splash2" />
 
+        
+        <ScrollView 
+            android:layout_width="fill_parent"
+    		android:layout_height="fill_parent">
 		 <TableLayout 
 		    android:id="@+id/DetailShowtableLayout"
 		    android:layout_width="wrap_content"
 		    android:layout_height="match_parent"
 		    android:shrinkColumns="*"
 		    android:stretchColumns="*">
+		    
 		 
 		     <!-- Show Title -->
 		    <TableRow
@@ -194,12 +199,12 @@
 		            android:layout_span="2"
 		            android:gravity="left"
 		            android:textColor="@color/wallet_holo_blue_light"		            
-		            android:text="Description" 
+		            android:text="LESS THAN JAKE, BIG D  THE KIDS TABLE, INTERRUPTERS.\nSpectrasonic and punkottawa.com present \nWednesday October 22 @ Ritual Nightclub (137 Besserer St.) \nlicensed 19+ - 7:30pm doors - $22 advance + service charges \ntickets available at Vertigo Records and http://www.spectrasonic.com/event/640283" 
 		            >
 		        </TextView>
 		    </TableRow>		    
       </TableLayout>
-               
+      </ScrollView>   
     </LinearLayout>
 
 </RelativeLayout>
