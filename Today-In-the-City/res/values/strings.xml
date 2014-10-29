@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Today In The City</string>
+    <string name="app_name">TodayInTheCity</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_search">Nearby Music Shows</string>
-    <string name="title_activity_create">Create Show</string>
-    <string name="title_activity_shows">My Music Shows</string>
-    <string name="title_activity_create_band">Create Band</string>
-    <string name="title_activity_details">Details Show</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_create">CreateActivity</string>
+    <string name="title_activity_shows">ShowsActivity</string>
+    <string name="title_activity_create_band">CreateBand</string>
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
