@@ -2,27 +2,61 @@ package com.KNASK.todayinthecitymodel;
 
 import java.sql.Date;
 
+import android.graphics.Bitmap;
+
 public class Band {
 
-	private String bandID;
+	private int bandID;
 	private String bandName;
 	private Genre genre;
-	private Date createdDate;
 	private String description;
+	private Bitmap 	bandImage;
 	
-	private Band(){
-		
+	public int getBandID() {
+		return bandID;
 	}
 	
-	public static void createBand(){
-		
+	public void setBandID(int bandID) {
+		this.bandID = bandID;
 	}
 	
-	public static void deleteBand(Band band){
-		
+	public String getBandName() {
+		return bandName;
 	}
 	
-	private void deleteThisBand(){
-		
+	public void setBandName(String bandName) {
+		this.bandName = bandName;
 	}
+	
+	public Genre getGenre() {
+		return genre;
+	}
+	
+	public void setGenre(Genre genre) {
+		this.genre = genre;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public Bitmap getBandImage() {
+		return bandImage;
+	}
+	
+	public void setBandImage(Bitmap bandImage) {
+		this.bandImage = bandImage;
+	}
+	
+	@Override
+	public String toString() {
+		return bandName;
+	}
+	
+
+	
 }

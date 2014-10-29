@@ -22,7 +22,7 @@
 		        android:id="@+id/textView1"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="Name Of Event:" 
+		        android:text="Title:" 
 		        android:layout_weight="0"/>
 		
 		    <EditText
@@ -34,8 +34,47 @@
 		
 		        <requestFocus />
 		    </EditText>
+		    
+		   	<!-- Location List (this list should be come from database -->		    
+		    <TextView
+		        android:id="@+id/textView11"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="0"
+		        android:text="Location:" />
 		
-		    <!-- location name(building name) -->
+		    <Spinner
+		        android:id="@+id/spinnerLocation"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" />
+		
+		    <!-- Band (this list should be come from database -->		    
+		    <TextView
+		        android:id="@+id/textView6"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="0"
+		        android:text="Band:" />
+		
+		    <Spinner
+		        android:id="@+id/spinnerBand"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" />
+		    
+		    <!-- Genre ( -->		    
+		    <TextView
+		        android:id="@+id/textView12"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="0"
+		        android:text="Genre:" />
+		
+		    <Spinner
+		        android:id="@+id/spinnerGenre"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" />
+		    	    
+		    <!-- location name(building name) 
 		    <TextView
 		        android:id="@+id/textView2"
 		        android:layout_width="wrap_content"
@@ -49,8 +88,8 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0"
 		        android:ems="10"/>
-
-		    <!-- address of location, at least number of house and street name -->		    		    
+			-->
+		    <!-- address of location, at least number of house and street name 		    		    
 		    <TextView
 		        android:id="@+id/textView3"
 		        android:layout_width="wrap_content"
@@ -65,7 +104,8 @@
 		        android:layout_weight="0"
 		        android:ems="10"
 		        android:inputType="textPostalAddress" />	
-
+			-->
+			
 		    <!-- date  -->	
 		    <TextView
 		        android:id="@+id/textView4"
@@ -132,19 +172,7 @@
 		        android:layout_weight="0"
 		        android:ems="10"
 		        android:inputType="numberDecimal" />
-		
-		    <!-- Band (this list should be come from database -->		    
-		    <TextView
-		        android:id="@+id/textView6"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="0"
-		        android:text="Band:" />
-		
-		    <Spinner
-		        android:id="@+id/spinnerBand"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content" />
+
 		    
 		    <!-- Email -->		
 		    <TextView

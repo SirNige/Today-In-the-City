@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.KNASK.todayinthecitymodel.Band;
+import com.KNASK.todayinthecitymodel.Genre;
+import com.KNASK.todayinthecitymodel.Location;
 import com.KNASK.todayinthecitymodel.ShowEvent;
 
 import android.app.Activity;
@@ -51,16 +54,74 @@ public class CreateActivity extends Activity implements OnClickListener {
         btnTimePicker.setOnClickListener(this);
         
 		
+        /////////////////////////////////////////////////////////////////////////////////////////////
+		//this list must come from a location table of database.
+		Spinner spinnerLoc = (Spinner) findViewById(R.id.spinnerLocation);
+		List<Location> listLoc = new ArrayList<Location>();
+		
+		//data for TEST only
+		String[][] data = {
+				  {"Crazy Halloween Night!", "7:00PM Fri Oct 31, 2014", "Algonquin College", "1385 Woodroffe Ave, Ottawa"},
+				  {"Raging Nathans Finderskeepers and Dead Weights", "2:00PM Tue Oct 14, 2014", "Mayfair Theatre Ottawa", "1074 Bank Street, Ottawa"},
+				  {"Loreena McKennitt", "7:00PM Sun Oct 31, 2014", "Canadian Film Institute", "395 Rue Wellington, Ottawa"},
+				  {"LIGHTS", "7:00PM Wed Nov 30, 2014", "Landmark 7 Ottawa",   "111 Albert Street, Ottawa"},
+				  {"Audible Obsession", "7:00PM Sat Oct 16, 2014", "Ottawa Family Cinema",   "710 Broadview Ave, Ottawa"},
+				  {"Unearth", "7:00PM Mon Oct 27, 2014", "Cineplex Odeon South Keys",   "2214 Bank Street, Ottawa"}
+				};
+		
+		for(int i = 0; i < data.length ; i++) {
+			Location loc = new Location();
+			
+			loc.setLocatonID(i);
+			loc.setLocationName(data[i][2]);
+			loc.setLocationAddress(data[i][3]);
+			listLoc.add(loc);
+		}
+
+		ArrayAdapter<Location> dataAdapterLoc = new ArrayAdapter<Location>(this, android.R.layout.simple_spinner_item, listLoc);
+		dataAdapterLoc.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerLoc.setAdapter(dataAdapterLoc);
+		
+        /////////////////////////////////////////////////////////////////////////////////////////////
 		//this list must come from a band table of database.
-		Spinner spinner = (Spinner) findViewById(R.id.spinnerBand);
-		List<String> list = new ArrayList<String>();
-		list.add("Band 1");
-		list.add("Band 2");
-		list.add("Band 3");
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-			android.R.layout.simple_spinner_item, list);
-		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(dataAdapter);
+		Spinner spinnerBand = (Spinner) findViewById(R.id.spinnerBand);
+		List<Band> listBand = new ArrayList<Band>();
+		
+		//data for TEST only
+		String[][] dataBand = {
+				  {"Metallica", "Good Band"},
+				  {"The Beatles", "Nice Band"},
+				  {"Led Zeppelin", "Awesome Band"},
+				  {"Queen", "Great Band"},
+				  {"Radiohead", "So Good Band"}
+				};
+		for(int i = 0; i < dataBand.length ; i++) {
+			Band band = new Band();
+			
+			band.setBandID(i);
+			band.setBandName(dataBand[i][0]);
+			band.setGenre(Genre.values()[i]);
+			band.setDescription(dataBand[i][1]);
+
+			listBand.add(band);
+		}
+
+		ArrayAdapter<Band> dataAdapterBand = new ArrayAdapter<Band>(this, android.R.layout.simple_spinner_item, listBand);
+		dataAdapterBand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerBand.setAdapter(dataAdapterBand);
+		
+        /////////////////////////////////////////////////////////////////////////////////////////////
+		//this list must Genre enumeration
+		Spinner spinnerGenre = (Spinner) findViewById(R.id.spinnerGenre);
+		List<String> listGenre = new ArrayList<String>();		
+		for(int i = 0 ; i < Genre.values().length ; i++ ) {	
+			listGenre.add(Genre.values()[i].toString());
+		}	
+		ArrayAdapter<String> dataAdapterGenre = new ArrayAdapter<String>(this,
+			android.R.layout.simple_spinner_item, listGenre);
+		dataAdapterGenre.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerGenre.setAdapter(dataAdapterGenre);
+		
 		
 	}
 

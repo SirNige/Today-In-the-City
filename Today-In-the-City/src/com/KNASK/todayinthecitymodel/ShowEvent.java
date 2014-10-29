@@ -17,6 +17,7 @@ public class ShowEvent extends Application implements Serializable  {
 	private Genre 	genre;
 	private String 	showTitle;
 	private String 	showID;
+	private int 	locationID;
 	private String 	locationName;
 	private String 	locationAddress;
 	private Integer entranceFee;
@@ -77,6 +78,14 @@ public class ShowEvent extends Application implements Serializable  {
 		this.showID = showID;
 	}
 
+	public int getLocationID() {
+		return locationID;
+	}
+
+	public void setLocationID(int locationID) {
+		this.locationID = locationID;
+	}
+	
 	public String getLocationName() {
 		return locationName;
 	}
@@ -147,6 +156,11 @@ public class ShowEvent extends Application implements Serializable  {
 
 	public void setAgeGroup(String ageGroup) {
 		this.ageGroup = ageGroup;
+	}
+
+	@Override
+	public String toString() {
+		return showTitle;
 	}
 	
 }
