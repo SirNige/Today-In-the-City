@@ -17,28 +17,6 @@
         android:layout_alignParentTop="true" >
     </ExpandableListView>
 
-    <LinearLayout
-        android:id="@id/linearLayout1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:gravity="right" >
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create Band" 
-            android:onClick="createBand"/>
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create Show"
-            android:onClick="createShow" />
-    </LinearLayout>
+ 
 
 </RelativeLayout>

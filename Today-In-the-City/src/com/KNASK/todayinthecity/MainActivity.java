@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.KNASK.todayinthecitymodel.Band;
+import com.KNASK.todayinthecitymodel.Location;
 import com.KNASK.todayinthecitymodel.ShowEvent;
 
 import android.os.Bundle;
@@ -25,23 +26,22 @@ public class MainActivity extends Activity {
     HashMap<String, List<String>> listDataChild;
 	
 	// Calling Application class (see application tag in AndroidManifest.xml)
-    ShowEvent showEvents;   
+    ShowEvent 	showEvents;   
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-
-		//Read show list from database 
-		showEvents = (ShowEvent) getApplicationContext(); 
-		
-        showEvents.showEventList = new ArrayList<ShowEvent>();
-        
-        //this method is for test only.
-        addTestEvent();
 		//
-        
+		showEvents 		= (ShowEvent) getApplicationContext(); 	
+		
+		//create show array list
+        showEvents.showEventList 	= new ArrayList<ShowEvent>();
+
+        //Read Show list from database
+        LoadShowList();
+     
         
         expListView = (ExpandableListView) findViewById(R.id.expandableListView1);
         prepareListData();
@@ -49,32 +49,6 @@ public class MainActivity extends Activity {
         expListView.setAdapter(listAdapter);
         expListView.expandGroup(0);
              
-	}
-	
-	/////////////////////////////////////////////////////////////////////////////
-	// It should be retrieved from Database.
-	public void addTestEvent() {
-		String[][] data = {
-//				  {"Crazy Halloween Night!", "7:00PM Fri Oct 31, 2014", "Algonquin College", "1385 Woodroffe Ave, Ottawa"},
-//				  {"Raging Nathans Finderskeepers and Dead Weights", "2:00PM Tue Oct 14, 2014", "Mayfair Theatre Ottawa", "1074 Bank Street, Ottawa"},
-//				  {"Loreena McKennitt", "7:00PM Sun Oct 31, 2014", "Canadian Film Institute", "395 Rue Wellington, Ottawa"},
-				  {"LIGHTS", "7:00PM Wed Nov 30, 2014", "Landmark 7 Ottawa",   "111 Albert Street, Ottawa"},
-				  {"Audible Obsession", "7:00PM Sat Oct 16, 2014", "Ottawa Family Cinema",   "710 Broadview Ave, Ottawa"},
-				  {"Unearth", "7:00PM Mon Oct 27, 2014", "Cineplex Odeon South Keys",   "2214 Bank Street, Ottawa"}
-				};
-		
-		for(int i = 0; i < data.length ; i++) {
-			ShowEvent showEvent = new ShowEvent();
-			
-			showEvent.setShowID(i);
-			showEvent.setShowTitle(data[i][0]);
-			showEvent.setShowDate(data[i][1]);
-			showEvent.setLocationName(data[i][2]);
-			showEvent.setLocationAddress(data[i][3]);
-
-			showEvents.addShowEvent(showEvent);
-		}
-		
 	}
 	
 	public void nearMe(View view) {
@@ -149,5 +123,34 @@ public class MainActivity extends Activity {
         listDataChild.put(listDataHeader.get(1), nowShowing);
         listDataChild.put(listDataHeader.get(2), comingSoon);
     }
-	
+    
+    /**
+     * Load show list from database
+     */
+    private void LoadShowList() {
+    	
+    	//*********** use for TEST
+		String[][] data = {
+//				  {"Crazy Halloween Night!", "7:00PM Fri Oct 31, 2014", "Algonquin College", "1385 Woodroffe Ave, Ottawa"},
+//				  {"Raging Nathans Finderskeepers and Dead Weights", "2:00PM Tue Oct 14, 2014", "Mayfair Theatre Ottawa", "1074 Bank Street, Ottawa"},
+//				  {"Loreena McKennitt", "7:00PM Sun Oct 31, 2014", "Canadian Film Institute", "395 Rue Wellington, Ottawa"},
+				  {"LIGHTS", "7:00PM Wed Nov 30, 2014", "Landmark 7 Ottawa",   "111 Albert Street, Ottawa"},
+				  {"Audible Obsession", "7:00PM Sat Oct 16, 2014", "Ottawa Family Cinema",   "710 Broadview Ave, Ottawa"},
+				  {"Unearth", "7:00PM Mon Oct 27, 2014", "Cineplex Odeon South Keys",   "2214 Bank Street, Ottawa"}
+				};
+		
+		for(int i = 0; i < data.length ; i++) {
+			ShowEvent showEvent = new ShowEvent();
+			
+			showEvent.setShowID(i);
+			showEvent.setShowTitle(data[i][0]);
+			showEvent.setShowDate(data[i][1]);
+			showEvent.setLocationName(data[i][2]);
+			showEvent.setLocationAddress(data[i][3]);
+
+			showEvents.addShowEvent(showEvent);
+		}
+		 	
+    }
+   
 }

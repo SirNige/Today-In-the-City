@@ -1,10 +1,12 @@
 package com.KNASK.todayinthecitymodel;
 
-public class Location {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class Location implements Serializable {
 	private int locatonID;
 	private String locationName;
 	private String locationAddress;
-	
 	
 	public int getLocatonID() {
 		return locatonID;

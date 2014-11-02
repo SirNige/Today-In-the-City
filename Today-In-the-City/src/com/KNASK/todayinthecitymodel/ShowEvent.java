@@ -27,22 +27,23 @@ public class ShowEvent extends Application implements Serializable  {
 	private String 	contactPhone;
 	private String 	webSite;
 	private String 	ageGroup;
-	private ArrayList<Band> bandList;
+	private Band 	band;
 	
 	public ShowEvent() {
 	
-		bandList = new ArrayList<Band>();
-
 	}
 	
 	//add a show
 	public void addShowEvent(ShowEvent showEvent) {
 		showEventList.add(showEvent);
 	}
-	
-	//add line up of band for this show
-	public void addBand(Band band) {
-		bandList.add(band);
+
+	public Band getBand() {
+		return band;
+	}
+
+	public void setBand(Band band) {
+		this.band = band;
 	}
 
 	//getter and setter functions

@@ -8,9 +8,10 @@
         android:showAsAction="never"
         android:title="@string/action_settings"/>
     
-        <item android:id="@+id/action_create"
-          android:title="Create"
-          android:showAsAction="ifRoom" />
+	<item android:id="@+id/action_create"
+	  android:title="Create"
+	  android:icon="@drawable/ic_upload"
+	  android:showAsAction="ifRoom"/>
     
 
 </menu>

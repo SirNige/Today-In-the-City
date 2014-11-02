@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,7 +28,9 @@ import android.widget.Toast;
 
 public class CreateActivity extends Activity implements OnClickListener {
 
-	ShowEvent showEvents;
+	ShowEvent 		showEvents;
+	List<Band> 		listBand;
+	List<Location> 	listLoc;
 	
 	//widget GUI
 	ImageButton btnCalendar, btnTimePicker;
@@ -55,56 +58,20 @@ public class CreateActivity extends Activity implements OnClickListener {
         
 		
         /////////////////////////////////////////////////////////////////////////////////////////////
-		//this list must come from a location table of database.
+		//Load location list and set the values up at spinner
 		Spinner spinnerLoc = (Spinner) findViewById(R.id.spinnerLocation);
-		List<Location> listLoc = new ArrayList<Location>();
 		
-		//data for TEST only
-		String[][] data = {
-				  {"Crazy Halloween Night!", "7:00PM Fri Oct 31, 2014", "Algonquin College", "1385 Woodroffe Ave, Ottawa"},
-				  {"Raging Nathans Finderskeepers and Dead Weights", "2:00PM Tue Oct 14, 2014", "Mayfair Theatre Ottawa", "1074 Bank Street, Ottawa"},
-				  {"Loreena McKennitt", "7:00PM Sun Oct 31, 2014", "Canadian Film Institute", "395 Rue Wellington, Ottawa"},
-				  {"LIGHTS", "7:00PM Wed Nov 30, 2014", "Landmark 7 Ottawa",   "111 Albert Street, Ottawa"},
-				  {"Audible Obsession", "7:00PM Sat Oct 16, 2014", "Ottawa Family Cinema",   "710 Broadview Ave, Ottawa"},
-				  {"Unearth", "7:00PM Mon Oct 27, 2014", "Cineplex Odeon South Keys",   "2214 Bank Street, Ottawa"}
-				};
-		
-		for(int i = 0; i < data.length ; i++) {
-			Location loc = new Location();
-			
-			loc.setLocatonID(i);
-			loc.setLocationName(data[i][2]);
-			loc.setLocationAddress(data[i][3]);
-			listLoc.add(loc);
-		}
+		LoadLocationList();
 
 		ArrayAdapter<Location> dataAdapterLoc = new ArrayAdapter<Location>(this, android.R.layout.simple_spinner_item, listLoc);
 		dataAdapterLoc.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinnerLoc.setAdapter(dataAdapterLoc);
 		
         /////////////////////////////////////////////////////////////////////////////////////////////
-		//this list must come from a band table of database.
+		//Load band list and set the values up at spinner
 		Spinner spinnerBand = (Spinner) findViewById(R.id.spinnerBand);
-		List<Band> listBand = new ArrayList<Band>();
 		
-		//data for TEST only
-		String[][] dataBand = {
-				  {"Metallica", "Good Band"},
-				  {"The Beatles", "Nice Band"},
-				  {"Led Zeppelin", "Awesome Band"},
-				  {"Queen", "Great Band"},
-				  {"Radiohead", "So Good Band"}
-				};
-		for(int i = 0; i < dataBand.length ; i++) {
-			Band band = new Band();
-			
-			band.setBandID(i);
-			band.setBandName(dataBand[i][0]);
-			band.setGenre(Genre.values()[i]);
-			band.setDescription(dataBand[i][1]);
-
-			listBand.add(band);
-		}
+		LoadBandList();
 
 		ArrayAdapter<Band> dataAdapterBand = new ArrayAdapter<Band>(this, android.R.layout.simple_spinner_item, listBand);
 		dataAdapterBand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -189,9 +156,12 @@ public class CreateActivity extends Activity implements OnClickListener {
 		if (id == R.id.action_settings) {
 			return true;
 		}
+		else if (id == R.id.action_create) {
+			((Button)findViewById(R.id.buttonCreate)).callOnClick();
+		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	/** Called when the user touches the Create button */
 	public void clickCreateEvent(View view) {
 		//validate data
@@ -215,7 +185,7 @@ public class CreateActivity extends Activity implements OnClickListener {
 			showEvent.setLocationAddress(location.getLocationAddress());
 			
 			Band band = (Band)((Spinner) findViewById(R.id.spinnerBand)).getSelectedItem();
-			showEvent.addBand(band);
+			showEvent.setBand(band);
 			
 			showEvent.setEntranceFee(((EditText)findViewById(R.id.editPrice)).getText().toString().trim());
 			showEvent.setContactEmail(((EditText)findViewById(R.id.editEmail)).getText().toString().trim());
@@ -225,7 +195,7 @@ public class CreateActivity extends Activity implements OnClickListener {
 	
 			showEvents.addShowEvent(showEvent);
 			
-			Toast.makeText(this, "Created a New Band", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Created a New Show", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -279,4 +249,58 @@ public class CreateActivity extends Activity implements OnClickListener {
 		
 		return showID;
 	}
+	
+	/**
+	 * Load band list from database
+	 */
+	private void LoadBandList() {
+		
+		listBand = new ArrayList<Band>();
+		
+		//********* data for TEST only
+		String[][] dataBand = {
+				  {"Metallica", "Good Band"},
+				  {"The Beatles", "Nice Band"},
+				  {"Led Zeppelin", "Awesome Band"},
+				  {"Queen", "Great Band"},
+				  {"Radiohead", "So Good Band"}
+				};
+		for(int i = 0; i < dataBand.length ; i++) {
+			Band band = new Band();
+			
+			band.setBandID(i);
+			band.setBandName(dataBand[i][0]);
+			band.setGenre(Genre.values()[i]);
+			band.setDescription(dataBand[i][1]);
+
+			listBand.add(band);
+		}
+	}
+	
+	/**
+	 * load location list from database
+	 */
+	private void LoadLocationList() {
+		listLoc = new ArrayList<Location>();
+		
+		//**************** data for TEST only
+		String[][] data = {
+				  {"Crazy Halloween Night!", "7:00PM Fri Oct 31, 2014", "Algonquin College", "1385 Woodroffe Ave, Ottawa"},
+				  {"Raging Nathans Finderskeepers and Dead Weights", "2:00PM Tue Oct 14, 2014", "Mayfair Theatre Ottawa", "1074 Bank Street, Ottawa"},
+				  {"Loreena McKennitt", "7:00PM Sun Oct 31, 2014", "Canadian Film Institute", "395 Rue Wellington, Ottawa"},
+				  {"LIGHTS", "7:00PM Wed Nov 30, 2014", "Landmark 7 Ottawa",   "111 Albert Street, Ottawa"},
+				  {"Audible Obsession", "7:00PM Sat Oct 16, 2014", "Ottawa Family Cinema",   "710 Broadview Ave, Ottawa"},
+				  {"Unearth", "7:00PM Mon Oct 27, 2014", "Cineplex Odeon South Keys",   "2214 Bank Street, Ottawa"}
+				};
+		
+		for(int i = 0; i < data.length ; i++) {
+			Location loc = new Location();
+			
+			loc.setLocatonID(i);
+			loc.setLocationName(data[i][2]);
+			loc.setLocationAddress(data[i][3]);
+			listLoc.add(loc);
+		}
+	}
+	
 }

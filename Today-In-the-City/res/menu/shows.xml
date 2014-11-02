@@ -7,5 +7,15 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
-
+    
+	<item android:id="@+id/action_createband"
+	  android:title="Create Band"
+	  android:icon="@drawable/ic_addband"
+	  android:showAsAction="ifRoom"/>
+	
+ 	<item android:id="@+id/action_createshow"
+	  android:title="Create Show"
+	  android:icon="@drawable/ic_addshow"
+	  android:showAsAction="ifRoom"/>   
+    
 </menu>

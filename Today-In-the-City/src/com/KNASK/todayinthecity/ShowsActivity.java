@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 public class ShowsActivity extends Activity {
 
@@ -31,15 +30,23 @@ public class ShowsActivity extends Activity {
 		if (id == R.id.action_settings) {
 			return true;
 		}
+		else if (id == R.id.action_createband) {
+			createBand();
+
+		}
+		else if (id == R.id.action_createshow) {
+			createShow();
+
+		}			
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void createShow(View view) {
+	public void createShow() {
 		Intent i = new Intent(getApplicationContext(), CreateActivity.class);
 		startActivity(i);
 	}
 	
-	public void createBand(View view) {
+	public void createBand() {
 		Intent i = new Intent(getApplicationContext(), CreateBand.class);
 		startActivity(i);
 	}
