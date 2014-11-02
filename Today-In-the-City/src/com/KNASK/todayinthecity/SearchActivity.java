@@ -167,7 +167,7 @@ public class SearchActivity extends FragmentActivity implements LocationListener
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
  
         // Zoom in the Google Map
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(18));
 	}
 
 	@Override

@@ -16,11 +16,11 @@ public class ShowEvent extends Application implements Serializable  {
 	private String 	showDate;
 	private Genre 	genre;
 	private String 	showTitle;
-	private String 	showID;
+	private int 	showID;
 	private int 	locationID;
 	private String 	locationName;
 	private String 	locationAddress;
-	private Integer entranceFee;
+	private String  entranceFee;
 	private Bitmap 	eventPoster;
 	private String 	description;
 	private String 	contactEmail;
@@ -70,11 +70,11 @@ public class ShowEvent extends Application implements Serializable  {
 		this.showTitle = showTitle;
 	}
 
-	public String getShowID() {
+	public int getShowID() {
 		return showID;
 	}
 
-	public void setShowID(String showID) {
+	public void setShowID(int showID) {
 		this.showID = showID;
 	}
 
@@ -102,11 +102,11 @@ public class ShowEvent extends Application implements Serializable  {
 		this.locationAddress = locationAddress;
 	}
 
-	public Integer getEntranceFee() {
+	public String getEntranceFee() {
 		return entranceFee;
 	}
 
-	public void setEntranceFee(Integer entranceFee) {
+	public void setEntranceFee(String entranceFee) {
 		this.entranceFee = entranceFee;
 	}
 

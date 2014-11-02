@@ -36,14 +36,14 @@ public class DetailsActivity extends Activity {
             TextView tvCost = (TextView) findViewById(R.id.detailEvent_entranceFee);          
             tvCost.setText(showEvent.getEntranceFee());
             
-//            TextView tvEmail = (TextView) findViewById(R.id.detailEvent_email);          
-//            tvEmail.setText(showEvent.getContactEmail());
-//            
-//            TextView tvPhone = (TextView) findViewById(R.id.detailEvent_phone);          
-//            tvPhone.setText(showEvent.getContactPhone());
-//
-//            TextView tvWebsite = (TextView) findViewById(R.id.detailEvent_website);          
-//            tvWebsite.setText(showEvent.getWebSite());
+            TextView tvEmail = (TextView) findViewById(R.id.detailEvent_email);          
+            tvEmail.setText(showEvent.getContactEmail());
+            
+            TextView tvPhone = (TextView) findViewById(R.id.detailEvent_phone);          
+            tvPhone.setText(showEvent.getContactPhone());
+
+            TextView tvWebsite = (TextView) findViewById(R.id.detailEvent_website);          
+            tvWebsite.setText(showEvent.getWebSite());
             
             TextView tvDescription = (TextView) findViewById(R.id.detailEvent_showDescription);          
             tvDescription.setText(showEvent.getDescription());

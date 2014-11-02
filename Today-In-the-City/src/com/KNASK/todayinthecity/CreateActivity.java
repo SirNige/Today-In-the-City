@@ -111,7 +111,7 @@ public class CreateActivity extends Activity implements OnClickListener {
 		spinnerBand.setAdapter(dataAdapterBand);
 		
         /////////////////////////////////////////////////////////////////////////////////////////////
-		//this list must Genre enumeration
+		//this list must get from Genre enumeration
 		Spinner spinnerGenre = (Spinner) findViewById(R.id.spinnerGenre);
 		List<String> listGenre = new ArrayList<String>();		
 		for(int i = 0 ; i < Genre.values().length ; i++ ) {	
@@ -194,12 +194,89 @@ public class CreateActivity extends Activity implements OnClickListener {
 	
 	/** Called when the user touches the Create button */
 	public void clickCreateEvent(View view) {
-
-		//insert a record
+		//validate data
+		if(ValidateShowEntry()) {
+			//insert a record to database
+			int showID = InsertShowData();
+			
+			//add it in ShowEvent class
+			ShowEvent showEvent = new ShowEvent();
+			
+			showEvent.setShowID(showID);
+			showEvent.setShowTitle(((EditText)findViewById(R.id.editTitle)).getText().toString().trim());
+			showEvent.setShowDate(((EditText)findViewById(R.id.editDate)).getText().toString().trim() + " " + ((EditText)findViewById(R.id.editTime)).getText().toString().trim());
+			
+			int genre = ((Spinner) findViewById(R.id.spinnerGenre)).getSelectedItemPosition();
+			showEvent.setGenre(Genre.values()[genre]);
+			
+			Location location = (Location)((Spinner) findViewById(R.id.spinnerLocation)).getSelectedItem();
+			showEvent.setLocationID(location.getLocatonID());
+			showEvent.setLocationName(location.getLocationName());
+			showEvent.setLocationAddress(location.getLocationAddress());
+			
+			Band band = (Band)((Spinner) findViewById(R.id.spinnerBand)).getSelectedItem();
+			showEvent.addBand(band);
+			
+			showEvent.setEntranceFee(((EditText)findViewById(R.id.editPrice)).getText().toString().trim());
+			showEvent.setContactEmail(((EditText)findViewById(R.id.editEmail)).getText().toString().trim());
+			showEvent.setContactPhone(((EditText)findViewById(R.id.editPhone)).getText().toString().trim());
+			showEvent.setWebSite(((EditText)findViewById(R.id.editWebsite)).getText().toString().trim());
+			showEvent.setDescription(((EditText)findViewById(R.id.editDescription)).getText().toString().trim());
+	
+			showEvents.addShowEvent(showEvent);
+			
+			Toast.makeText(this, "Created a New Band", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	/**
+	 * check if EditText is empty.
+	 * Title, Date and Time of show are required, the others are optional.
+	 * @return true if all validated, otherwise false
+	 */
+	private boolean ValidateShowEntry() {
+		//check if title is empty
+		if(!hasContent((EditText) findViewById(R.id.editTitle))) {
+			Toast.makeText(this, "Enter the title of show.", Toast.LENGTH_SHORT).show();
+			return false;
+		}	
+		//check if date is empty, and does not have to past date.
+		if(!hasContent((EditText) findViewById(R.id.editDate))) {
+			Toast.makeText(this, "Enter the date of show.", Toast.LENGTH_SHORT).show();
+			return false;
+		}
+		//check if time is empty
+		if(!hasContent((EditText) findViewById(R.id.editTime))) {
+			Toast.makeText(this, "Enter the time of show.", Toast.LENGTH_SHORT).show();
+			return false;
+		}	
 		
-		//add it in ShowEvent class
-		
+		return true;
+	}
+	
+	/**
+	 * Check if an EditText is empty
+	 * @param edit - EditText control
+	 * @return true if has content, otherwise false.
+	 */
+	private boolean hasContent(EditText edit) {
+	    // Always assume false until proven otherwise
+	    boolean bHasContent = false; 
 
-		Toast.makeText(CreateActivity.this, "Created a New Band", Toast.LENGTH_SHORT).show();
+	    if (edit.getText().toString().trim().length() > 0) {
+	        // Got content
+	        bHasContent = true;
+	    }
+	    return bHasContent;
+	}
+	
+	/**
+	 * 
+	 * @return - return the show ID after insert a record
+	 */
+	private int InsertShowData() {
+		int showID = 0;
+		
+		return showID;
 	}
 }

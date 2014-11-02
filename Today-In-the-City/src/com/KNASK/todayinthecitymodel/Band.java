@@ -1,10 +1,11 @@
 package com.KNASK.todayinthecitymodel;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import android.graphics.Bitmap;
 
-public class Band {
+public class Band implements Serializable {
 
 	private int bandID;
 	private String bandName;
