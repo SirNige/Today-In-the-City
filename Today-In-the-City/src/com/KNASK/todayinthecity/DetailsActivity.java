@@ -1,4 +1,7 @@
 package com.KNASK.todayinthecity;
+import java.util.ArrayList;
+
+import com.KNASK.todayinthecitymodel.Band;
 import com.KNASK.todayinthecitymodel.ShowEvent;
 
 import android.app.Activity;
@@ -26,9 +29,20 @@ public class DetailsActivity extends Activity {
             TextView tvTitle = (TextView) findViewById(R.id.detailEvent_showtitle);          
             // Setting the ShowTitle
             tvTitle.setText(showEvent.getShowTitle());
-        	
+            
             TextView tvDate = (TextView) findViewById(R.id.detailEvent_showDate);          
             tvDate.setText(showEvent.getShowDate());
+            
+            
+            TextView tvBands = (TextView) findViewById(R.id.detailEvent_Band);  
+        	StringBuilder sb = new StringBuilder();
+
+        	for(Band band : showEvent.getBand()) {
+        		sb.append(band.toString());
+        		sb.append(", ");
+        	}
+            tvBands.setText(sb.toString().substring(0, sb.toString().length()-1));
+
             
             TextView tvLocation = (TextView) findViewById(R.id.detailEvent_locationName);          
             tvLocation.setText(showEvent.getLocationName() + System.getProperty("line.separator") + showEvent.getLocationAddress());           

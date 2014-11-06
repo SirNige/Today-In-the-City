@@ -35,6 +35,29 @@
 		        <requestFocus />
 		    </EditText>
 		    
+		    <!-- Band -->		    
+		    <TextView
+		        android:id="@+id/textView6"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="0"
+		        android:text="Band:" />
+		
+			<Button
+		        android:id="@+id/buttonSelect"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:text="Select Bands" 
+		        android:gravity="center_horizontal"
+		        android:onClick="clickSelectBands" />	
+		        	    
+		    <!--  
+		    <Spinner
+		        android:id="@+id/spinnerBand"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" />
+		    -->
+		    
 		   	<!-- Location List (this list should be come from database -->		    
 		    <TextView
 		        android:id="@+id/textView11"
@@ -48,20 +71,8 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content" />
 		
-		    <!-- Band (this list should be come from database -->		    
-		    <TextView
-		        android:id="@+id/textView6"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="0"
-		        android:text="Band:" />
-		
-		    <Spinner
-		        android:id="@+id/spinnerBand"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content" />
-		    
-		    <!-- Genre ( -->		    
+
+		    <!-- Genre  -->		    
 		    <TextView
 		        android:id="@+id/textView12"
 		        android:layout_width="wrap_content"

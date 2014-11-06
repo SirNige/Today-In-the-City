@@ -79,7 +79,28 @@
 		            android:text="  " >
 		        </TextView>
 		    </TableRow>
-		    
+
+		    <!-- Band list -->
+		    <TableRow
+		        android:id="@+id/DetailShowtableRow22"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content" 
+		        android:padding="2dp">	 
+		        <TextView
+		            android:id="@+id/detailEvent_text11"
+		            android:text="Band "
+		            android:gravity="right"
+		            android:textStyle="bold" 
+		            android:layout_weight=".25">
+		        </TextView>	 
+		        <TextView
+		            android:id="@+id/detailEvent_Band"
+		            android:gravity="left"
+		            android:textColor="@color/wallet_holo_blue_light"
+		            android:text="  " >
+		        </TextView>
+		    </TableRow>
+		    		    
       		<!-- Location -->
 		    <TableRow
 		        android:id="@+id/DetailShowtableRow3"

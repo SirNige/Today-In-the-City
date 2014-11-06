@@ -10,8 +10,11 @@ import com.KNASK.todayinthecitymodel.Location;
 import com.KNASK.todayinthecitymodel.ShowEvent;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +32,8 @@ import android.widget.Toast;
 public class CreateActivity extends Activity implements OnClickListener {
 
 	ShowEvent 		showEvents;
-	List<Band> 		listBand;
+	ArrayList<Band> listBand;
+	ArrayList<Band> SelectedBands;
 	List<Location> 	listLoc;
 	
 	//widget GUI
@@ -45,6 +49,8 @@ public class CreateActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_create);
 		
 		showEvents = (ShowEvent) getApplicationContext();
+		
+		SelectedBands = new ArrayList<Band>();  // Where we track the selected items
 		
 		// put Date Picker Dialog box  and Time Picker Dialog box code in Activity class
         btnCalendar = (ImageButton) findViewById(R.id.imageCalendar);
@@ -69,13 +75,13 @@ public class CreateActivity extends Activity implements OnClickListener {
 		
         /////////////////////////////////////////////////////////////////////////////////////////////
 		//Load band list and set the values up at spinner
-		Spinner spinnerBand = (Spinner) findViewById(R.id.spinnerBand);
-		
+//		Spinner spinnerBand = (Spinner) findViewById(R.id.spinnerBand);
+//		
 		LoadBandList();
-
-		ArrayAdapter<Band> dataAdapterBand = new ArrayAdapter<Band>(this, android.R.layout.simple_spinner_item, listBand);
-		dataAdapterBand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerBand.setAdapter(dataAdapterBand);
+//
+//		ArrayAdapter<Band> dataAdapterBand = new ArrayAdapter<Band>(this, android.R.layout.simple_spinner_item, listBand);
+//		dataAdapterBand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//		spinnerBand.setAdapter(dataAdapterBand);
 		
         /////////////////////////////////////////////////////////////////////////////////////////////
 		//this list must get from Genre enumeration
@@ -162,6 +168,57 @@ public class CreateActivity extends Activity implements OnClickListener {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/** 
+	 * Select Bands
+	 *  Create a pop-up window and select bands, then save at the array list to selected bands
+	 *  
+	 */
+	public void clickSelectBands(View view) {
+		//create popup windows listed bands
+		
+		boolean bl[] = new boolean[listBand.size()];
+		
+    	AlertDialog.Builder builder=new AlertDialog.Builder(this);
+    	builder.setTitle(R.string.select_bands);
+    	builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // User clicked OK, so save the mSelectedItems results somewhere
+                // or return them to the component that opened the dialog
+            	
+            }
+        });
+    	builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+              
+            }
+        });
+    	
+    	//ArrayList of Band to ArrayList of String
+    	ArrayList<String> bandNames = new ArrayList<String>();
+    	for(Band band : listBand) {
+    		bandNames.add(band.toString());
+    	}
+    	CharSequence[]  charSeqOfNames = bandNames.toArray(new CharSequence[bandNames.size()]);
+    	builder.setMultiChoiceItems(charSeqOfNames, bl, new DialogInterface.OnMultiChoiceClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (isChecked) {
+                    // If the user checked the item, add it to the selected items
+             	   SelectedBands.add(listBand.get(which));
+                } else if (SelectedBands.contains(listBand.get(which))) {
+                    // Else, if the item is already in the array, remove it 
+             	   SelectedBands.remove(listBand.get(which));
+                }
+			}
+		});
+    	builder.show();		
+		
+	}
+	
 	/** Called when the user touches the Create button */
 	public void clickCreateEvent(View view) {
 		//validate data
@@ -184,8 +241,11 @@ public class CreateActivity extends Activity implements OnClickListener {
 			showEvent.setLocationName(location.getLocationName());
 			showEvent.setLocationAddress(location.getLocationAddress());
 			
-			Band band = (Band)((Spinner) findViewById(R.id.spinnerBand)).getSelectedItem();
-			showEvent.setBand(band);
+//			Band band = (Band)((Spinner) findViewById(R.id.spinnerBand)).getSelectedItem();
+//			showEvent.setBand(band);
+			for(Band band : SelectedBands){
+				showEvent.setBand(band);
+			}
 			
 			showEvent.setEntranceFee(((EditText)findViewById(R.id.editPrice)).getText().toString().trim());
 			showEvent.setContactEmail(((EditText)findViewById(R.id.editEmail)).getText().toString().trim());
@@ -302,5 +362,7 @@ public class CreateActivity extends Activity implements OnClickListener {
 			listLoc.add(loc);
 		}
 	}
-	
+
 }
+
+
