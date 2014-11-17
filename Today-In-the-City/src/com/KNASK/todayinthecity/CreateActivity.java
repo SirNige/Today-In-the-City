@@ -1,13 +1,15 @@
 package com.KNASK.todayinthecity;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.KNASK.todayinthecityDAO.ShowDAO;
 import com.KNASK.todayinthecitymodel.Band;
 import com.KNASK.todayinthecitymodel.Genre;
 import com.KNASK.todayinthecitymodel.Location;
-import com.KNASK.todayinthecitymodel.ShowEvent;
+import com.KNASK.todayinthecitymodel.Show;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,7 +33,7 @@ import android.widget.Toast;
 
 public class CreateActivity extends Activity implements OnClickListener {
 
-	ShowEvent 		showEvents;
+	Show 		showEvents;
 	ArrayList<Band> listBand;
 	ArrayList<Band> SelectedBands;
 	List<Location> 	listLoc;
@@ -48,7 +50,7 @@ public class CreateActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create);
 		
-		showEvents = (ShowEvent) getApplicationContext();
+		showEvents = (Show) getApplicationContext();
 		
 		SelectedBands = new ArrayList<Band>();  // Where we track the selected items
 		
@@ -223,37 +225,39 @@ public class CreateActivity extends Activity implements OnClickListener {
 	public void clickCreateEvent(View view) {
 		//validate data
 		if(ValidateShowEntry()) {
-			//insert a record to database
-			int showID = InsertShowData();
-			
 			//add it in ShowEvent class
-			ShowEvent showEvent = new ShowEvent();
+			Show showEvent = new Show();
 			
-			showEvent.setShowID(showID);
-			showEvent.setShowTitle(((EditText)findViewById(R.id.editTitle)).getText().toString().trim());
-			showEvent.setShowDate(((EditText)findViewById(R.id.editDate)).getText().toString().trim() + " " + ((EditText)findViewById(R.id.editTime)).getText().toString().trim());
+			showEvent.setShowID(-1); //Set show ID to -1 to cause the server to re-create the row.
+			showEvent.setName(((EditText)findViewById(R.id.editTitle)).getText().toString().trim());
+			showEvent.setDate(Timestamp.valueOf(((EditText)findViewById(R.id.editDate)).getText().toString().trim() + " " + ((EditText)findViewById(R.id.editTime)).getText().toString().trim()));
 			
 			int genre = ((Spinner) findViewById(R.id.spinnerGenre)).getSelectedItemPosition();
 			showEvent.setGenre(Genre.values()[genre]);
 			
 			Location location = (Location)((Spinner) findViewById(R.id.spinnerLocation)).getSelectedItem();
-			showEvent.setLocationID(location.getLocatonID());
-			showEvent.setLocationName(location.getLocationName());
-			showEvent.setLocationAddress(location.getLocationAddress());
+			showEvent.setLocation(location);
 			
-//			Band band = (Band)((Spinner) findViewById(R.id.spinnerBand)).getSelectedItem();
-//			showEvent.setBand(band);
-			for(Band band : SelectedBands){
-				showEvent.setBand(band);
-			}
+			showEvent.setBands(SelectedBands);
+
 			
-			showEvent.setEntranceFee(((EditText)findViewById(R.id.editPrice)).getText().toString().trim());
+			showEvent.setCost(((EditText)findViewById(R.id.editPrice)).getText().toString().trim());
 			showEvent.setContactEmail(((EditText)findViewById(R.id.editEmail)).getText().toString().trim());
 			showEvent.setContactPhone(((EditText)findViewById(R.id.editPhone)).getText().toString().trim());
 			showEvent.setWebSite(((EditText)findViewById(R.id.editWebsite)).getText().toString().trim());
 			showEvent.setDescription(((EditText)findViewById(R.id.editDescription)).getText().toString().trim());
+			
+			//insert a record to database
+			ShowDAO showDAO = new ShowDAO();
+			int showID = showDAO.create(showEvent);
+
+			
+//			Band band = (Band)((Spinner) findViewById(R.id.spinnerBand)).getSelectedItem();
+//			showEvent.setBand(band);
+
+
 	
-			showEvents.addShowEvent(showEvent);
+			//showEvents.addShowEvent(showEvent);
 			
 			Toast.makeText(this, "Created a New Show", Toast.LENGTH_SHORT).show();
 		}
@@ -329,7 +333,7 @@ public class CreateActivity extends Activity implements OnClickListener {
 			Band band = new Band();
 			
 			band.setBandID(i);
-			band.setBandName(dataBand[i][0]);
+			band.setName(dataBand[i][0]);
 			band.setGenre(Genre.values()[i]);
 			band.setDescription(dataBand[i][1]);
 

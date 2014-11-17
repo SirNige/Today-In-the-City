@@ -3,9 +3,10 @@ package com.KNASK.todayinthecity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.KNASK.todayinthecityDAO.BandsDAO;
 import com.KNASK.todayinthecitymodel.Band;
 import com.KNASK.todayinthecitymodel.Genre;
-import com.KNASK.todayinthecitymodel.ShowEvent;
+import com.KNASK.todayinthecitymodel.Show;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -75,7 +76,14 @@ public class CreateBand extends Activity {
 			Genre genre = Genre.values()[indexSpin];	
 			String description = ((EditText)findViewById(R.id.editBandDescription)).getText().toString().trim();
 			
-			int bandID = InsertBandData();
+			Band band = new Band();
+			band.setName(bandName);
+			band.setGenre(genre);
+			band.setDescription(description);
+			
+			BandsDAO BandDAO = new BandsDAO();
+
+			int bandID = BandDAO.create(band);
 			
 			Toast.makeText(this, "Created a New Band", Toast.LENGTH_SHORT).show();		
 		}
@@ -107,13 +115,4 @@ public class CreateBand extends Activity {
 	    return bHasContent;
 	}
 	
-	/**
-	 * 
-	 * @return - return the show ID after insert a record
-	 */
-	private int InsertBandData() {
-		int bandID = 0;
-		
-		return bandID;
-	}
 }

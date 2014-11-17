@@ -1,8 +1,9 @@
 package com.KNASK.todayinthecity;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import com.KNASK.todayinthecitymodel.Band;
-import com.KNASK.todayinthecitymodel.ShowEvent;
+import com.KNASK.todayinthecitymodel.Show;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -15,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class DetailsActivity extends Activity {
-	private ShowEvent 	showEvent;
+	private Show 	showEvent;
   
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,21 +24,22 @@ public class DetailsActivity extends Activity {
 		setContentView(R.layout.activity_details);
 		
 		try{  
-        	showEvent = (ShowEvent) getIntent().getSerializableExtra("SHOWEVENT");
+        	showEvent = (Show) getIntent().getSerializableExtra("SHOWEVENT");
             
             // Getting reference to the TextView to set show name
             TextView tvTitle = (TextView) findViewById(R.id.detailEvent_showtitle);          
             // Setting the ShowTitle
-            tvTitle.setText(showEvent.getShowTitle());
+            tvTitle.setText(showEvent.getName());
             
             TextView tvDate = (TextView) findViewById(R.id.detailEvent_showDate);          
-            tvDate.setText(showEvent.getShowDate());
+            SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            tvDate.setText(formatDate.format(showEvent.getDate().getTime()));
             
             
             TextView tvBands = (TextView) findViewById(R.id.detailEvent_Band);  
         	StringBuilder sb = new StringBuilder();
 
-        	for(Band band : showEvent.getBand()) {
+        	for(Band band : showEvent.getBands()) {
         		sb.append(band.toString());
         		sb.append(", ");
         	}
@@ -45,10 +47,10 @@ public class DetailsActivity extends Activity {
 
             
             TextView tvLocation = (TextView) findViewById(R.id.detailEvent_locationName);          
-            tvLocation.setText(showEvent.getLocationName() + System.getProperty("line.separator") + showEvent.getLocationAddress());           
+            tvLocation.setText(showEvent.getLocation().getLocationName() + System.getProperty("line.separator") + showEvent.getLocation().getLocationAddress());           
             
             TextView tvCost = (TextView) findViewById(R.id.detailEvent_entranceFee);          
-            tvCost.setText(showEvent.getEntranceFee());
+            tvCost.setText(showEvent.getCost());
             
             TextView tvEmail = (TextView) findViewById(R.id.detailEvent_email);          
             tvEmail.setText(showEvent.getContactEmail());

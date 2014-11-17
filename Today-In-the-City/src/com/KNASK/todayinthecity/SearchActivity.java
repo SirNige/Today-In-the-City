@@ -1,10 +1,13 @@
 package com.KNASK.todayinthecity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.KNASK.todayinthecitymodel.ShowEvent;
+import com.KNASK.todayinthecityDAO.BandsDAO;
+import com.KNASK.todayinthecityDAO.ShowDAO;
+import com.KNASK.todayinthecitymodel.Show;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,14 +47,15 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 
 	private GoogleMap googleMap;
 	
-	ShowEvent showEvents;
+	List<Show> showEvents;
 	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
 			
-		showEvents = (ShowEvent) getApplicationContext();
+		//showEvents = (List<Show>) getApplicationContext();
+		LoadShowList();
 		
         // Getting Google Play availability status
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
@@ -117,16 +121,17 @@ public class SearchActivity extends FragmentActivity implements LocationListener
                     // Getting reference to the TextView to set show place
                     TextView tvPlace = (TextView) v.findViewById(R.id.place);
      
-                    ShowEvent showEvent = showEvents.showEventList.get(Integer.parseInt(marker.getSnippet()));
+                    Show showEvent = showEvents.get(Integer.parseInt(marker.getSnippet()));
                     
                     // Setting the ShowTitle
-                    tvTitle.setText(showEvent.getShowTitle());
+                    tvTitle.setText(showEvent.getName());
      
                     // Setting the ShowDate
-                    tvDate.setText(showEvent.getShowDate());
+                    SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    tvDate.setText(formatDate.format(showEvent.getDate().getTime()));
      
                     // Setting the LocationName
-                    tvPlace.setText(showEvent.getLocationName());
+                    tvPlace.setText(showEvent.getLocation().getLocationName());
      
                     // Returning the view containing InfoWindow contents
                     return v;
@@ -139,7 +144,7 @@ public class SearchActivity extends FragmentActivity implements LocationListener
          	   @Override
 
         	   public void onInfoWindowClick(Marker marker) {
-         		   	ShowEvent showEvent = showEvents.showEventList.get(Integer.parseInt(marker.getSnippet()));
+         		   	Show showEvent = showEvents.get(Integer.parseInt(marker.getSnippet()));
 				
 					Intent intent = new Intent(SearchActivity.this, DetailsActivity.class);
 					
@@ -238,11 +243,11 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 	    List<Address> addressList;
 	    Double latitude, longitude;
 	    
-	    if (!showEvents.showEventList.isEmpty()) {
+	    if (showEvents.size() > 0) {
 	    	int num = 0;
-	    	for (ShowEvent showEvent: showEvents.showEventList ) {
+	    	for (Show showEvent: showEvents ) {
 	            try {
-	                addressList = geoCoder.getFromLocationName(showEvent.getLocationAddress(), 1);
+	                addressList = geoCoder.getFromLocationName(showEvent.getLocation().getLocationAddress(), 1);
 	                if (addressList == null || addressList.isEmpty() || addressList.equals("")) {
 	                    addressList = geoCoder.getFromLocationName("Algonquin College", 1);
 	                }
@@ -251,8 +256,8 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 	                           
 	            	googleMap.addMarker(new MarkerOptions()
 	                          .position(new LatLng(latitude, longitude))
-	                          .title(showEvent.getLocationName())
-	                          .snippet(""+ num++)
+	                          .title((showEvent.getLocation()).getLocationName())
+	                          .snippet(""+ showEvent.getShowID())
 	                          .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
 	                          .alpha(0.7f)
 	                );
@@ -263,4 +268,16 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 	        }
 	    }
 	} //end addMarkersToMap
+	
+    /**
+     * Load show list from database
+     */
+    private void LoadShowList() {
+    	
+    	ShowDAO showDAO = new ShowDAO();
+        BandsDAO bandDAO = new BandsDAO();
+    	
+
+		 	
+    }
 }
