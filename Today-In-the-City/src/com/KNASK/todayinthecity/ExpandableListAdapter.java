@@ -3,12 +3,17 @@ package com.KNASK.todayinthecity;
 import java.util.HashMap;
 import java.util.List;
  
+
+
+import com.KNASK.todayinthecitymodel.Show;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
  
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
@@ -16,13 +21,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
+    private HashMap<String, List<Show>> _listDataChild;
  
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
-            HashMap<String, List<String>> listChildData) {
+            HashMap<String, List<Show>> listDataChild) {
         this._context = context;
         this._listDataHeader = listDataHeader;
-        this._listDataChild = listChildData;
+        this._listDataChild = listDataChild;
     }
  
     @Override
@@ -40,7 +45,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
             boolean isLastChild, View convertView, ViewGroup parent) {
  
-        final String childText = (String) getChild(groupPosition, childPosition);
+        final Show childShow = (Show) getChild(groupPosition, childPosition);
  
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -48,10 +53,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_item, null);
         }
  
-        TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.lblListItem);
- 
-        txtListChild.setText(childText);
+        //display the poster image of show
+        ImageView image = (ImageView) convertView.findViewById(R.id.imageListItem);
+        image.setImageResource(R.drawable.splash2);
+        
+        //display title of show
+        TextView txtListChild = (TextView) convertView.findViewById(R.id.lblListItem);
+        txtListChild.setText(childShow.toString());
+        
+        //display location of show
+        TextView txtListChild_Loc = (TextView) convertView.findViewById(R.id.lblListItem_loc);
+        txtListChild_Loc.setText(childShow.getLocation().getLocationName());
+        
         return convertView;
     }
  

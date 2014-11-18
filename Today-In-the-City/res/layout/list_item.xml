@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="55dip"
-    android:orientation="vertical" >
+ <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:columnCount="2"
+	android:orientation="horizontal"
+	android:rowCount="2" 
+	android:layout_marginLeft="20dip">  
  
-    <TextView
-        android:id="@+id/lblListItem"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="17dip"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
- 
-</LinearLayout>
+		    
+    <ImageView
+        android:id="@+id/imageListItem"
+        android:layout_width="50dip"
+        android:layout_height="40dip"
+        android:layout_rowSpan="2"
+        android:layout_marginLeft="20dip"
+        />
+	   
+	<TextView
+	       android:id="@+id/lblListItem"
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:layout_alignParentTop="true"
+	       android:textColor="#005588"
+	       android:textSize="13dp" 
+	       android:layout_marginLeft="5dip"
+	       android:textAppearance="?android:attr/textAppearanceMedium" />
+	<TextView
+	       android:id="@+id/lblListItem_loc"
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:layout_alignParentTop="true"
+	       android:textColor="#7799cc"
+	       android:textSize="10dp"
+	       android:layout_marginLeft="10dip"
+	       android:textAppearance="?android:attr/textAppearanceMedium" />		     
+
+</GridLayout>

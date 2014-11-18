@@ -33,7 +33,7 @@ import android.widget.Toast;
 
 public class CreateActivity extends Activity implements OnClickListener {
 
-	Show 		showEvents;
+
 	ArrayList<Band> listBand;
 	ArrayList<Band> SelectedBands;
 	List<Location> 	listLoc;
@@ -50,7 +50,6 @@ public class CreateActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create);
 		
-		showEvents = (Show) getApplicationContext();
 		
 		SelectedBands = new ArrayList<Band>();  // Where we track the selected items
 		

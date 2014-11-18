@@ -1,6 +1,7 @@
 package com.KNASK.todayinthecity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.KNASK.todayinthecitymodel.Band;
 import com.KNASK.todayinthecitymodel.Show;
@@ -39,12 +40,15 @@ public class DetailsActivity extends Activity {
             TextView tvBands = (TextView) findViewById(R.id.detailEvent_Band);  
         	StringBuilder sb = new StringBuilder();
 
-        	for(Band band : showEvent.getBands()) {
-        		sb.append(band.toString());
-        		sb.append(", ");
+        	List<Band> bands = new ArrayList<Band>();
+        	bands = showEvent.getBands();
+        	if(bands != null) {
+	        	for(Band band : bands) {
+	        		sb.append(band.toString());
+	        		sb.append(", ");
+	        	}
+	            tvBands.setText(sb.toString().substring(0, sb.toString().length()-1));
         	}
-            tvBands.setText(sb.toString().substring(0, sb.toString().length()-1));
-
             
             TextView tvLocation = (TextView) findViewById(R.id.detailEvent_locationName);          
             tvLocation.setText(showEvent.getLocation().getLocationName() + System.getProperty("line.separator") + showEvent.getLocation().getLocationAddress());           
