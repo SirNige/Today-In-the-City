@@ -2,11 +2,7 @@ package com.KNASK.todayinthecitymodel;
 
 import java.io.Serializable;
 import java.util.List;
-import android.media.Image;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class Band implements Serializable {
 	public Band(){}
 	
@@ -19,18 +15,18 @@ public class Band implements Serializable {
 	}
 
 	public String getName() {
-		return bandName;
+		return name;
 	}
 
 	public void setName(String name) {
-		this.bandName = name;
+		this.name = name;
 	}
 
-	public Genre getGenre() {
+	public int getGenre() {
 		return genre;
 	}
 
-	public void setGenre(Genre genre) {
+	public void setGenre(int genre) {
 		this.genre = genre;
 	}
 
@@ -40,14 +36,6 @@ public class Band implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Image getImage() {
-		return image;
-	}
-
-	public void setImage(Image image) {
-		this.image = image;
 	}
 
 	public List<Show> getShows() {
@@ -65,18 +53,11 @@ public class Band implements Serializable {
 		
 		return false;
 	}
-	
-	@Override
-	public String toString() {
-		return bandName;
-	}
 
 	private int bandID = -1;
-	private String bandName;
-	private Genre genre;
+	private String name;
+	private int genre;
 	private String description;
-	private Image image;
 	
 	private List<Show> shows;
 }
-

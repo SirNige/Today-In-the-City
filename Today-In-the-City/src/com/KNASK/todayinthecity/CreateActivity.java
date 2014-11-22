@@ -3,11 +3,11 @@ package com.KNASK.todayinthecity;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import com.KNASK.todayinthecityDAO.ShowDAO;
 import com.KNASK.todayinthecitymodel.Band;
-import com.KNASK.todayinthecitymodel.Genre;
 import com.KNASK.todayinthecitymodel.Location;
 import com.KNASK.todayinthecitymodel.Show;
 
@@ -86,10 +86,29 @@ public class CreateActivity extends Activity implements OnClickListener {
 		
         /////////////////////////////////////////////////////////////////////////////////////////////
 		//this list must get from Genre enumeration
+		HashMap genreMap = new HashMap<Integer, String>();
+		genreMap.put(0, "Alternative/Indie");
+		genreMap.put(1, "Blues");
+		genreMap.put(2, "Christian/Gospel");
+		genreMap.put(3, "Classical");
+		genreMap.put(4, "Country");
+		genreMap.put(5, "Dance/Eletronic");
+		genreMap.put(6, "Folk");
+		genreMap.put(7, "Hip-Hop/Rap");
+		genreMap.put(8, "Jazz");
+		genreMap.put(9, "Metal");
+		genreMap.put(10, "New Age");
+		genreMap.put(11, "Pop");
+		genreMap.put(12, "R&B/Soul");
+		genreMap.put(13, "Reggae");
+		genreMap.put(14, "Rock");
+		genreMap.put(15, "Seasonal");
+		genreMap.put(16, "Vocal/Easy Listening");
+		genreMap.put(17, "World");
 		Spinner spinnerGenre = (Spinner) findViewById(R.id.spinnerGenre);
 		List<String> listGenre = new ArrayList<String>();		
-		for(int i = 0 ; i < Genre.values().length ; i++ ) {	
-			listGenre.add(Genre.values()[i].toString());
+		for(int i = 0 ; i < genreMap.size() ; i++ ) {	
+			listGenre.add(genreMap.get(i).toString());
 		}	
 		ArrayAdapter<String> dataAdapterGenre = new ArrayAdapter<String>(this,
 			android.R.layout.simple_spinner_item, listGenre);
@@ -232,7 +251,7 @@ public class CreateActivity extends Activity implements OnClickListener {
 			showEvent.setDate(Timestamp.valueOf(((EditText)findViewById(R.id.editDate)).getText().toString().trim() + " " + ((EditText)findViewById(R.id.editTime)).getText().toString().trim()));
 			
 			int genre = ((Spinner) findViewById(R.id.spinnerGenre)).getSelectedItemPosition();
-			showEvent.setGenre(Genre.values()[genre]);
+			showEvent.setGenre(genre);
 			
 			Location location = (Location)((Spinner) findViewById(R.id.spinnerLocation)).getSelectedItem();
 			showEvent.setLocation(location);
@@ -333,7 +352,7 @@ public class CreateActivity extends Activity implements OnClickListener {
 			
 			band.setBandID(i);
 			band.setName(dataBand[i][0]);
-			band.setGenre(Genre.values()[i]);
+			band.setGenre(1);
 			band.setDescription(dataBand[i][1]);
 
 			listBand.add(band);
@@ -359,9 +378,9 @@ public class CreateActivity extends Activity implements OnClickListener {
 		for(int i = 0; i < data.length ; i++) {
 			Location loc = new Location();
 			
-			loc.setLocatonID(i);
-			loc.setLocationName(data[i][2]);
-			loc.setLocationAddress(data[i][3]);
+			loc.setLocationID(i);
+			loc.setName(data[i][2]);
+			loc.setAddress(data[i][3]);
 			listLoc.add(loc);
 		}
 	}

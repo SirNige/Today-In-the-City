@@ -1,56 +1,103 @@
 package com.KNASK.todayinthecityDAO;
-
+import com.KNASK.todayinthecitymodel.Fan;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import com.KNASK.todayinthecitymodel.Fan;
+import com.fasterxml.aalto.stax.InputFactoryImpl;
+import com.fasterxml.aalto.stax.OutputFactoryImpl;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
+import com.fasterxml.jackson.dataformat.xml.XmlFactory;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class FanDAO implements IFanDAO {
 	
-	private static final String REST_SERVICE_URL = "http://rnguy.no-ip.biz:8080/com.KNASK.TodayInTheCity.11.05.18.46/rest";
-	private static final Client client = ClientBuilder.newClient();
+	private static final String REST_SERVICE_URL = "http://rnguy.no-ip.biz:8080/com.KNASK.TodayInTheCity.11.21.16.55/rest/Fan";
+	private static final XmlFactory f = new XmlFactory(new InputFactoryImpl(), new OutputFactoryImpl());
+	private static final JacksonXmlModule module = new JacksonXmlModule();
+	private static final XmlMapper xmlMapper = new XmlMapper(f, module);
 
 	@Override
 	public int create(Fan fan) {
-		Response response = client.target(REST_SERVICE_URL)
-				.request()
-				.post(Entity.entity(fan, MediaType.APPLICATION_XML), Response.class);
-		return Integer.parseInt(response.getHeaderString("id"));
+		try {
+			
+			URL currentURL = null;
+			
+			try {
+				currentURL = new URL(REST_SERVICE_URL);
+			} catch (MalformedURLException e) {
+				
+			}
+			
+	        HttpURLConnection conn = (HttpURLConnection) currentURL.openConnection();
+	        conn.setDoOutput(true);
+	        conn.setRequestMethod("POST");
+	        conn.setRequestProperty("Content-Type", "application/xml");
+	        
+	        OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream());
+		    
+	        xmlMapper.writeValue(osw, fan);
+	        
+			if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
+				throw new RuntimeException("Failed : HTTP error code : "
+					+ conn.getResponseCode());
+			}
+	 
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					(conn.getInputStream())));
+	 
+			String output;
+			System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				System.out.println(output);
+			}
+	 
+			conn.disconnect();
+	        
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    
+	    return 0;
 	}
 
 	@Override
 	public Fan get(int id) {
-		return client.target(REST_SERVICE_URL).path(Integer.toString(id)).request().get(new GenericType<Fan>(){});
-	}
-
-	@Override
-	public List<Fan> getList(int offset, int limit) {
-		return client.target(REST_SERVICE_URL).path("/list/" + offset + "/" + limit).request().get(new GenericType<List<Fan>>(){});
-	}
-
-	@Override
-	public boolean update(Fan fan) {
-		Response response = client.target(REST_SERVICE_URL)
-				.path(Integer.toString(fan.getFanID()))
-				.request()
-				.put(Entity.entity(fan, MediaType.APPLICATION_XML), Response.class);
+	    
+	    URL currentURL = null;
+		try {
+			currentURL = new URL(REST_SERVICE_URL + "/" + id);
+		} catch (MalformedURLException e) {
+		}
 		
-		return response.getStatus() == 201;
+		Fan fan = null;
+
+	    try {
+			fan = xmlMapper.readValue(currentURL, Fan.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    
+	    return fan;
+	}
+
+	@Override
+	public boolean update(Fan Fan) {
+		return false;
 	}
 
 	@Override
 	public boolean delete(int id) {
-		Response response = client.target(REST_SERVICE_URL)
-				.path(Integer.toString(id))
-				.request()
-				.delete();
-		return response.getStatus() == 201;
+		return false;
 	}
 
 }

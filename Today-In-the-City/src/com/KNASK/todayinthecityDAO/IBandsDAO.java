@@ -1,8 +1,6 @@
 package com.KNASK.todayinthecityDAO;
-
-import java.util.List;
-
 import com.KNASK.todayinthecitymodel.Band;
+import java.util.List;
 
 public interface IBandsDAO {
 	public int create(Band band);

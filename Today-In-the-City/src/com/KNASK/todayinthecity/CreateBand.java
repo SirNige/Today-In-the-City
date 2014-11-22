@@ -1,11 +1,11 @@
 package com.KNASK.todayinthecity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.KNASK.todayinthecityDAO.BandsDAO;
 import com.KNASK.todayinthecitymodel.Band;
-import com.KNASK.todayinthecitymodel.Genre;
 import com.KNASK.todayinthecitymodel.Show;
 
 import android.app.Activity;
@@ -31,10 +31,29 @@ public class CreateBand extends Activity {
 			
         /////////////////////////////////////////////////////////////////////////////////////////////
 		//this list must get from Genre enumeration
+		HashMap genreMap = new HashMap<Integer, String>();
+		genreMap.put(0, "Alternative/Indie");
+		genreMap.put(1, "Blues");
+		genreMap.put(2, "Christian/Gospel");
+		genreMap.put(3, "Classical");
+		genreMap.put(4, "Country");
+		genreMap.put(5, "Dance/Eletronic");
+		genreMap.put(6, "Folk");
+		genreMap.put(7, "Hip-Hop/Rap");
+		genreMap.put(8, "Jazz");
+		genreMap.put(9, "Metal");
+		genreMap.put(10, "New Age");
+		genreMap.put(11, "Pop");
+		genreMap.put(12, "R&B/Soul");
+		genreMap.put(13, "Reggae");
+		genreMap.put(14, "Rock");
+		genreMap.put(15, "Seasonal");
+		genreMap.put(16, "Vocal/Easy Listening");
+		genreMap.put(17, "World");
 		Spinner spinnerGenre = (Spinner) findViewById(R.id.spinnerBandGenre);
 		List<String> listGenre = new ArrayList<String>();		
-		for(int i = 0 ; i < Genre.values().length ; i++ ) {	
-			listGenre.add(Genre.values()[i].toString());
+		for(int i = 0 ; i < genreMap.size() ; i++ ) {	
+			listGenre.add(genreMap.get(i).toString());
 		}	
 		ArrayAdapter<String> dataAdapterGenre = new ArrayAdapter<String>(this,
 			android.R.layout.simple_spinner_item, listGenre);
@@ -73,12 +92,11 @@ public class CreateBand extends Activity {
 			
 			String bandName = ((EditText)findViewById(R.id.editBandName)).getText().toString().trim();
 			int indexSpin = ((Spinner) findViewById(R.id.spinnerBandGenre)).getSelectedItemPosition();
-			Genre genre = Genre.values()[indexSpin];	
 			String description = ((EditText)findViewById(R.id.editBandDescription)).getText().toString().trim();
 			
 			Band band = new Band();
 			band.setName(bandName);
-			band.setGenre(genre);
+			band.setGenre(indexSpin);
 			band.setDescription(description);
 			
 			BandsDAO BandDAO = new BandsDAO();

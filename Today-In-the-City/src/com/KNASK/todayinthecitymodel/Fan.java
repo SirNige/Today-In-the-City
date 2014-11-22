@@ -1,11 +1,10 @@
 package com.KNASK.todayinthecitymodel;
 
+import java.io.Serializable;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
-public class Fan {
+public class Fan implements Serializable {
 	public int getFanID() {
 		return fanID;
 	}

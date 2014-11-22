@@ -16,6 +16,7 @@ import com.KNASK.todayinthecitymodel.Show;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
@@ -27,6 +28,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
     ExpandableListAdapter listAdapter;
@@ -39,6 +41,10 @@ public class MainActivity extends Activity {
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		StrictMode.ThreadPolicy policy = new
+				StrictMode.ThreadPolicy.Builder()
+				.permitAll().build();
+				StrictMode.setThreadPolicy(policy);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
@@ -92,6 +98,7 @@ public class MainActivity extends Activity {
 		  
 	public void nearMe(View view) {
 		Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+		i.putExtra("SHOWEVENT", (ArrayList)showEvents);
 		startActivity(i);
 	}
 	
@@ -180,13 +187,28 @@ public class MainActivity extends Activity {
      */
     private void LoadShowList() {
     	
-    	try{
-//	    	ShowDAO showDAO = new ShowDAO();
+    	try {
+	    	ShowDAO showDAO = new ShowDAO();
 //	        BandsDAO bandDAO = new BandsDAO();
-//        
-//	        showEvents = showDAO.getList(0, 1000);
-    		
-    		
+	        
+	    	Show show = null;
+	    	
+	    	try {
+	    		show = showDAO.get(50);
+	    	} catch(NullPointerException e) {
+	    		Toast.makeText(getApplicationContext(), "Null Pointer 1", Toast.LENGTH_LONG).show();
+	    	}
+	    	
+	    	try {
+	    		Toast.makeText(getApplicationContext(), show.getName(), Toast.LENGTH_LONG).show();
+	    	} catch(NullPointerException e) {
+	    		Toast.makeText(getApplicationContext(), "Null Pointer!", Toast.LENGTH_LONG).show();
+	    	}
+    	} catch(Exception ex) {
+    		ex.printStackTrace();
+   		
+    	}	
+	        
     		////////////////////////////////////////////////////////////////////////////
     		///////////////////////////////////////////////////////////////////////////
     		////////////////////////////////////////////////////////////////////////////
@@ -205,9 +227,9 @@ public class MainActivity extends Activity {
 				showEvent.setDate(Timestamp.valueOf(data[i][1]));
 	
 				Location location = new Location();
-				location.setLocatonID(i);
-				location.setLocationName(data[i][2]);
-				location.setLocationAddress(data[i][3]);
+				location.setLocationID(i);
+				location.setName(data[i][2]);
+				location.setAddress(data[i][3]);
 	  			showEvent.setLocation(location);
 	
 	  			showEvents.add(showEvent);
@@ -226,11 +248,6 @@ public class MainActivity extends Activity {
 	        expListView.setAdapter(listAdapter);
 	        expListView.expandGroup(0);
 	  
-    	}
-    	catch(Exception ex) {
-    		ex.printStackTrace();
-   		
-    	}	
     }
     
     

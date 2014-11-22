@@ -51,7 +51,7 @@ public class DetailsActivity extends Activity {
         	}
             
             TextView tvLocation = (TextView) findViewById(R.id.detailEvent_locationName);          
-            tvLocation.setText(showEvent.getLocation().getLocationName() + System.getProperty("line.separator") + showEvent.getLocation().getLocationAddress());           
+            tvLocation.setText(showEvent.getLocation().getName() + System.getProperty("line.separator") + showEvent.getLocation().getAddress());           
             
             TextView tvCost = (TextView) findViewById(R.id.detailEvent_entranceFee);          
             tvCost.setText(showEvent.getCost());

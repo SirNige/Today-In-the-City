@@ -445,9 +445,9 @@ containing a value of this type.
         public static final int DetailShowtableRow8=0x7f07004b;
         public static final int action_create=0x7f07005a;
         public static final int action_createband=0x7f07005b;
-        public static final int action_createshow=0x7f070060;
-        public static final int action_search=0x7f07005e;
-        public static final int action_search2=0x7f07005f;
+        public static final int action_createshow=0x7f07005e;
+        public static final int action_search=0x7f07005c;
+        public static final int action_search2=0x7f07005d;
         public static final int action_settings=0x7f070059;
         public static final int book_now=0x7f070010;
         public static final int btnCreateBand=0x7f070031;
@@ -459,8 +459,6 @@ containing a value of this type.
         public static final int buy_now=0x7f07000f;
         public static final int buy_with_google=0x7f07000e;
         public static final int classic=0x7f070011;
-        public static final int createBandMenu=0x7f07005d;
-        public static final int createShowMenu=0x7f07005c;
         public static final int detailEvent_Band=0x7f07003b;
         public static final int detailEvent_email=0x7f070044;
         public static final int detailEvent_entranceFee=0x7f070041;
@@ -549,11 +547,10 @@ containing a value of this type.
     public static final class menu {
         public static final int create=0x7f0a0000;
         public static final int create_band=0x7f0a0001;
-        public static final int create_popup=0x7f0a0002;
-        public static final int details=0x7f0a0003;
-        public static final int main=0x7f0a0004;
-        public static final int search=0x7f0a0005;
-        public static final int shows=0x7f0a0006;
+        public static final int details=0x7f0a0002;
+        public static final int main=0x7f0a0003;
+        public static final int search=0x7f0a0004;
+        public static final int shows=0x7f0a0005;
     }
     public static final class string {
         public static final int accept=0x7f050002;

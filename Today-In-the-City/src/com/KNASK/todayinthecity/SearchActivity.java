@@ -54,7 +54,7 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
 			
-		//showEvents = (List<Show>) getApplicationContext();
+		showEvents = (ArrayList<Show>) getIntent().getSerializableExtra("SHOWEVENT");
 		LoadShowList();
 		
         // Getting Google Play availability status
@@ -131,7 +131,7 @@ public class SearchActivity extends FragmentActivity implements LocationListener
                     tvDate.setText(formatDate.format(showEvent.getDate().getTime()));
      
                     // Setting the LocationName
-                    tvPlace.setText(showEvent.getLocation().getLocationName());
+                    tvPlace.setText(showEvent.getLocation().getName());
      
                     // Returning the view containing InfoWindow contents
                     return v;
@@ -244,10 +244,9 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 	    Double latitude, longitude;
 	    
 	    if (showEvents.size() > 0) {
-	    	int num = 0;
 	    	for (Show showEvent: showEvents ) {
 	            try {
-	                addressList = geoCoder.getFromLocationName(showEvent.getLocation().getLocationAddress(), 1);
+	                addressList = geoCoder.getFromLocationName(showEvent.getLocation().getAddress(), 1);
 	                if (addressList == null || addressList.isEmpty() || addressList.equals("")) {
 	                    addressList = geoCoder.getFromLocationName("Algonquin College", 1);
 	                }
@@ -256,7 +255,7 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 	                           
 	            	googleMap.addMarker(new MarkerOptions()
 	                          .position(new LatLng(latitude, longitude))
-	                          .title((showEvent.getLocation()).getLocationName())
+	                          .title((showEvent.getLocation()).getName())
 	                          .snippet(""+ showEvent.getShowID())
 	                          .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
 	                          .alpha(0.7f)
@@ -274,10 +273,5 @@ public class SearchActivity extends FragmentActivity implements LocationListener
      */
     private void LoadShowList() {
     	
-    	ShowDAO showDAO = new ShowDAO();
-        BandsDAO bandDAO = new BandsDAO();
-    	
-
-		 	
     }
 }

@@ -1,68 +1,135 @@
 package com.KNASK.todayinthecityDAO;
-
-import java.util.List;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import android.os.AsyncTask;
 
 import com.KNASK.todayinthecitymodel.Band;
 import com.KNASK.todayinthecitymodel.Show;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import com.fasterxml.aalto.stax.InputFactoryImpl;
+import com.fasterxml.aalto.stax.OutputFactoryImpl;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
+import com.fasterxml.jackson.dataformat.xml.XmlFactory;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class ShowDAO implements IShowDAO {
 	
-	private static final String REST_SERVICE_URL = "http://rnguy.no-ip.biz:8080/com.KNASK.TodayInTheCity.11.06.19.28/rest/show/";
-	private static final Client client = ClientBuilder.newClient();
+	private static final String REST_SERVICE_URL = "http://rnguy.no-ip.biz:8080/com.KNASK.TodayInTheCity.11.21.16.55/rest/show";
+	private static final XmlFactory f = new XmlFactory(new InputFactoryImpl(), new OutputFactoryImpl());
+	private static final JacksonXmlModule module = new JacksonXmlModule();
+	private static final XmlMapper xmlMapper = new XmlMapper(f, module);
 
 	@Override
 	public int create(Show show) {
-		Response response = client.target(REST_SERVICE_URL)
-				.request()
-				.post(Entity.entity(show, MediaType.APPLICATION_XML), Response.class);
-		return Integer.parseInt(response.getHeaderString("id"));
+		try {
+			
+			DefaultHttpClient httpClient = new DefaultHttpClient();
+			HttpPost postRequest = new HttpPost(REST_SERVICE_URL);
+			StringEntity input = new StringEntity(xmlMapper.writeValueAsString(show));
+			postRequest.addHeader("content-type", "application/xml");
+			postRequest.setEntity(input);
+			HttpResponse response = httpClient.execute(postRequest);
+			
+			System.out.println(response.getStatusLine().getStatusCode());
+			
+			BufferedReader br = new BufferedReader(
+                    new InputStreamReader((response.getEntity().getContent())));
+
+			String output;
+			System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				System.out.println(output);
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    
+	    return 0;
 	}
 
 	@Override
 	public Show get(int id) {
-		return client.target(REST_SERVICE_URL)
-				.path(Integer.toString(id))
-				.request()
-				.get(Show.class);
+	    
+	    URL currentURL = null;
+		try {
+			currentURL = new URL(REST_SERVICE_URL + "/" + id);
+		} catch (MalformedURLException e) {
+		}
+		
+		Show show = null;
+
+	    try {
+			show = xmlMapper.readValue(currentURL, com.KNASK.todayinthecitymodel.Show.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    
+	    return show;
 	}
 
 	@Override
 	public List<Show> getList(int offset, int limit) {
-		return client.target(REST_SERVICE_URL).path("list/" + offset + "/" + limit).request().get(new GenericType<List<Show>>(){});
+	    URL currentURL = null;
+		try {
+			currentURL = new URL(REST_SERVICE_URL + "/list/" + offset + "/" + limit);
+		} catch (MalformedURLException e) {
+		}
+		
+		List<Show> show = null;
+
+	    try {
+			show = xmlMapper.readValue(currentURL, new TypeReference<List<Show>>() {});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    
+	    return show;
+	    
 	}
 	
 	@Override
 	public List<Band> getBands(Show show) {
-		System.out.println(REST_SERVICE_URL + Integer.toString(show.getShowID()) + "/bands");
-		return client.target(REST_SERVICE_URL).path(Integer.toString(show.getShowID()) + "/bands").request().get(new GenericType<List<Band>>(){});
+	    URL currentURL = null;
+		try {
+			currentURL = new URL(REST_SERVICE_URL + "/" + show.getShowID() + "/bands");
+		} catch (MalformedURLException e) {
+		}
+		
+		List<Band> band = null;
+
+	    try {
+			band = xmlMapper.readValue(currentURL, new TypeReference<List<Band>>() {});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    
+	    return band;
 	}
 
 	@Override
 	public boolean update(Show show) {
-		Response response = client.target(REST_SERVICE_URL)
-				.path(Integer.toString(show.getShowID()))
-				.request()
-				.put(Entity.entity(show, MediaType.APPLICATION_XML), Response.class);
-		
-		System.out.println(Integer.toString(show.getShowID()));
-		
-		return response.getStatus() == 201;
+		return false;
 	}
 
 	@Override
-	public boolean delete(Show show) {
-		Response response = client.target(REST_SERVICE_URL)
-				.path(Integer.toString(show.getShowID()))
-				.request()
-				.delete();
-		return response.getStatus() == 201;
+	public boolean delete(int id) {
+		return false;
 	}
 
 }

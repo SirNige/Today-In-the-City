@@ -1,35 +1,59 @@
 package com.KNASK.todayinthecitymodel;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Location implements Serializable {
-	private int locatonID;
-	private String locationName;
-	private String locationAddress;
-	
-	public int getLocatonID() {
-		return locatonID;
+	public int getLocationID() {
+		return locationID;
 	}
-	public void setLocatonID(int locatonID) {
-		this.locatonID = locatonID;
+
+	public void setLocationID(int locationID) {
+		this.locationID = locationID;
 	}
-	public String getLocationName() {
-		return locationName;
+
+	public String getName() {
+		return name;
 	}
-	public void setLocationName(String locationName) {
-		this.locationName = locationName;
+
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getLocationAddress() {
-		return locationAddress;
+
+	public String getAddress() {
+		return address;
 	}
-	public void setLocationAddress(String locationAddress) {
-		this.locationAddress = locationAddress;
-	}
-	@Override
-	public String toString() {
-		return this.locationName;
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
-	
+	public double getLat() {
+		return lat;
+	}
+
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
+
+	public double getLon() {
+		return lon;
+	}
+
+	public void setLon(double lon) {
+		this.lon = lon;
+	}
+
+	public boolean equals(Object other) {
+		if (this instanceof Location)
+			if (other instanceof Location)
+				return this.getLocationID() == ((Location)other).getLocationID();
+		
+		return false;
+	}
+
+	private int locationID = -1;
+	private String name;
+	private String address;
+	private double lat;
+	private double lon;
 }
