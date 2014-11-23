@@ -53,6 +53,12 @@ public class Band implements Serializable {
 		
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
+
 
 	private int bandID = -1;
 	private String name;

@@ -1,11 +1,18 @@
 package com.KNASK.todayinthecity;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import com.KNASK.todayinthecityDAO.BandsDAO;
+import com.KNASK.todayinthecityDAO.LocationDAO;
 import com.KNASK.todayinthecityDAO.ShowDAO;
 import com.KNASK.todayinthecitymodel.Band;
 import com.KNASK.todayinthecitymodel.Location;
@@ -17,7 +24,15 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.MediaStore.MediaColumns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,14 +42,15 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class CreateActivity extends Activity implements OnClickListener {
 
-
-	ArrayList<Band> listBand;
+	List<Band> listBand;
 	ArrayList<Band> SelectedBands;
 	List<Location> 	listLoc;
 	
@@ -44,6 +60,9 @@ public class CreateActivity extends Activity implements OnClickListener {
 	
 	// Variable for storing current date and time
     private int mYear, mMonth, mDay, mHour, mMinute;
+    
+    private final int REQUEST_CAMERA = 0;
+    private final int SELECT_FILE = 1;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -195,48 +214,48 @@ public class CreateActivity extends Activity implements OnClickListener {
 	 */
 	public void clickSelectBands(View view) {
 		//create popup windows listed bands
-		
-		boolean bl[] = new boolean[listBand.size()];
-		
-    	AlertDialog.Builder builder=new AlertDialog.Builder(this);
-    	builder.setTitle(R.string.select_bands);
-    	builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // User clicked OK, so save the mSelectedItems results somewhere
-                // or return them to the component that opened the dialog
-            	
-            }
-        });
-    	builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-              
-            }
-        });
-    	
-    	//ArrayList of Band to ArrayList of String
-    	ArrayList<String> bandNames = new ArrayList<String>();
-    	for(Band band : listBand) {
-    		bandNames.add(band.toString());
-    	}
-    	CharSequence[]  charSeqOfNames = bandNames.toArray(new CharSequence[bandNames.size()]);
-    	builder.setMultiChoiceItems(charSeqOfNames, bl, new DialogInterface.OnMultiChoiceClickListener() {
+		if(listBand != null && listBand.size() > 0) {
+			boolean bl[] = new boolean[listBand.size()];
 			
-			@Override
-			public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if (isChecked) {
-                    // If the user checked the item, add it to the selected items
-             	   SelectedBands.add(listBand.get(which));
-                } else if (SelectedBands.contains(listBand.get(which))) {
-                    // Else, if the item is already in the array, remove it 
-             	   SelectedBands.remove(listBand.get(which));
-                }
-			}
-		});
-    	builder.show();		
-		
+	    	AlertDialog.Builder builder=new AlertDialog.Builder(this);
+	    	builder.setTitle(R.string.select_bands);
+	    	builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+	
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+	                // User clicked OK, so save the mSelectedItems results somewhere
+	                // or return them to the component that opened the dialog
+	            	
+	            }
+	        });
+	    	builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+	            @Override
+	            public void onClick(DialogInterface dialog, int id) {
+	              
+	            }
+	        });
+	    	
+	    	//ArrayList of Band to ArrayList of String
+	    	ArrayList<String> bandNames = new ArrayList<String>();
+	    	for(Band band : listBand) {
+	    		bandNames.add(band.toString());
+	    	}
+	    	CharSequence[]  charSeqOfNames = bandNames.toArray(new CharSequence[bandNames.size()]);
+	    	builder.setMultiChoiceItems(charSeqOfNames, bl, new DialogInterface.OnMultiChoiceClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+	                if (isChecked) {
+	                    // If the user checked the item, add it to the selected items
+	             	   SelectedBands.add(listBand.get(which));
+	                } else if (SelectedBands.contains(listBand.get(which))) {
+	                    // Else, if the item is already in the array, remove it 
+	             	   SelectedBands.remove(listBand.get(which));
+	                }
+				}
+			});
+	    	builder.show();		
+		}
 	}
 	
 	/** Called when the user touches the Create button */
@@ -339,24 +358,39 @@ public class CreateActivity extends Activity implements OnClickListener {
 		
 		listBand = new ArrayList<Band>();
 		
-		//********* data for TEST only
-		String[][] dataBand = {
-				  {"Metallica", "Good Band"},
-				  {"The Beatles", "Nice Band"},
-				  {"Led Zeppelin", "Awesome Band"},
-				  {"Queen", "Great Band"},
-				  {"Radiohead", "So Good Band"}
-				};
-		for(int i = 0; i < dataBand.length ; i++) {
-			Band band = new Band();
-			
-			band.setBandID(i);
-			band.setName(dataBand[i][0]);
-			band.setGenre(1);
-			band.setDescription(dataBand[i][1]);
+		try {
+			BandsDAO bandDAO = new BandsDAO();
 
-			listBand.add(band);
+			try {
+				listBand = bandDAO.getList(1, 100);
+			} catch (NullPointerException e) {
+				Toast.makeText(getApplicationContext(), "The error has occurred during loading the band list.",
+						Toast.LENGTH_LONG).show();
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
 		}
+		
+		//********* data for TEST only
+//		String[][] dataBand = {
+//				  {"Metallica", "Good Band"},
+//				  {"The Beatles", "Nice Band"},
+//				  {"Led Zeppelin", "Awesome Band"},
+//				  {"Queen", "Great Band"},
+//				  {"Radiohead", "So Good Band"}
+//				};
+//		for(int i = 0; i < dataBand.length ; i++) {
+//			Band band = new Band();
+//			
+//			band.setBandID(i);
+//			band.setName(dataBand[i][0]);
+//			band.setGenre(1);
+//			band.setDescription(dataBand[i][1]);
+//
+//			listBand.add(band);
+//		}
 	}
 	
 	/**
@@ -365,26 +399,146 @@ public class CreateActivity extends Activity implements OnClickListener {
 	private void LoadLocationList() {
 		listLoc = new ArrayList<Location>();
 		
-		//**************** data for TEST only
-		String[][] data = {
-				  {"Crazy Halloween Night!", "7:00PM Fri Oct 31, 2014", "Algonquin College", "1385 Woodroffe Ave, Ottawa"},
-				  {"Raging Nathans Finderskeepers and Dead Weights", "2:00PM Tue Oct 14, 2014", "Mayfair Theatre Ottawa", "1074 Bank Street, Ottawa"},
-				  {"Loreena McKennitt", "7:00PM Sun Oct 31, 2014", "Canadian Film Institute", "395 Rue Wellington, Ottawa"},
-				  {"LIGHTS", "7:00PM Wed Nov 30, 2014", "Landmark 7 Ottawa",   "111 Albert Street, Ottawa"},
-				  {"Audible Obsession", "7:00PM Sat Oct 16, 2014", "Ottawa Family Cinema",   "710 Broadview Ave, Ottawa"},
-				  {"Unearth", "7:00PM Mon Oct 27, 2014", "Cineplex Odeon South Keys",   "2214 Bank Street, Ottawa"}
-				};
+		try {
+			LocationDAO locationDAO = new LocationDAO();
+
+			try {
+				//listLoc = locationDAO.getList(0, 50);
+			} catch (NullPointerException e) {
+				Toast.makeText(getApplicationContext(), "The error has occurred during loading the location list.",
+						Toast.LENGTH_LONG).show();
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		}
 		
-		for(int i = 0; i < data.length ; i++) {
-			Location loc = new Location();
-			
-			loc.setLocationID(i);
-			loc.setName(data[i][2]);
-			loc.setAddress(data[i][3]);
-			listLoc.add(loc);
+		
+		//**************** data for TEST only
+//		String[][] data = {
+//				  {"Crazy Halloween Night!", "7:00PM Fri Oct 31, 2014", "Algonquin College", "1385 Woodroffe Ave, Ottawa"},
+//				  {"Raging Nathans Finderskeepers and Dead Weights", "2:00PM Tue Oct 14, 2014", "Mayfair Theatre Ottawa", "1074 Bank Street, Ottawa"},
+//				  {"Loreena McKennitt", "7:00PM Sun Oct 31, 2014", "Canadian Film Institute", "395 Rue Wellington, Ottawa"},
+//				  {"LIGHTS", "7:00PM Wed Nov 30, 2014", "Landmark 7 Ottawa",   "111 Albert Street, Ottawa"},
+//				  {"Audible Obsession", "7:00PM Sat Oct 16, 2014", "Ottawa Family Cinema",   "710 Broadview Ave, Ottawa"},
+//				  {"Unearth", "7:00PM Mon Oct 27, 2014", "Cineplex Odeon South Keys",   "2214 Bank Street, Ottawa"}
+//				};
+//		
+//		for(int i = 0; i < data.length ; i++) {
+//			Location loc = new Location();
+//			
+//			loc.setLocationID(i);
+//			loc.setName(data[i][2]);
+//			loc.setAddress(data[i][3]);
+//			listLoc.add(loc);
+//		}
+	}
+	
+	public void clickSelectPhoto(View view) {
+		final CharSequence[] items = { "Take Photo", "Choose from Library",	"Cancel" };
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(CreateActivity.this);
+		builder.setTitle("Add Photo!");
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int item) {
+				if (items[item].equals("Take Photo")) {
+					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					File f = new File(android.os.Environment
+							.getExternalStorageDirectory(), "temp.jpg");
+					intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+					startActivityForResult(intent, REQUEST_CAMERA);
+				} else if (items[item].equals("Choose from Library")) {
+					Intent intent = new Intent(
+							Intent.ACTION_PICK,
+							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+					intent.setType("image/*");
+					startActivityForResult(
+							Intent.createChooser(intent, "Select File"),
+							SELECT_FILE);
+				} else if (items[item].equals("Cancel")) {
+					dialog.dismiss();
+				}
+			}
+		});
+		builder.show();
+	}
+	
+
+	public String getPath(Uri uri, Activity activity) {
+	        String[] projection = { MediaColumns.DATA };
+	        Cursor cursor = activity
+	                .managedQuery(uri, projection, null, null, null);
+	        int column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
+	        cursor.moveToFirst();
+	        return cursor.getString(column_index);
+	    }
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		ImageView imagePoster = (ImageView) findViewById(R.id.imagePoster);  
+		if (resultCode == RESULT_OK) {
+			if (requestCode == REQUEST_CAMERA) {
+				File f = new File(Environment.getExternalStorageDirectory()
+						.toString());
+				for (File temp : f.listFiles()) {
+					if (temp.getName().equals("temp.jpg")) {
+						f = temp;
+						break;
+					}
+				}
+				try {
+					Bitmap bm;
+					BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
+
+					bm = BitmapFactory.decodeFile(f.getAbsolutePath(),
+							btmapOptions);
+
+					// bm = Bitmap.createScaledBitmap(bm, 70, 70, true);
+					imagePoster.setImageBitmap(bm);
+
+					String path = android.os.Environment
+							.getExternalStorageDirectory()
+							+ File.separator
+							+ "Phoenix" + File.separator + "default";
+					f.delete();
+					OutputStream fOut = null;
+					File file = new File(path, String.valueOf(System
+							.currentTimeMillis()) + ".jpg");
+					try {
+						fOut = new FileOutputStream(file);
+						bm.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
+						fOut.flush();
+						fOut.close();
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (requestCode == SELECT_FILE) {
+				Uri selectedImageUri = data.getData();
+
+				String tempPath = getPath(selectedImageUri, CreateActivity.this);
+				Bitmap bm;
+				BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
+				bm = BitmapFactory.decodeFile(tempPath, btmapOptions);
+				imagePoster.setImageBitmap(bm);
+			}
 		}
 	}
-
+	
+	
 }
 
 

@@ -103,7 +103,7 @@ public class CreateBand extends Activity {
 
 			int bandID = BandDAO.create(band);
 			
-			Toast.makeText(this, "Created a New Band", Toast.LENGTH_SHORT).show();		
+			Toast.makeText(this, "Created a New Band (" + bandID + ")", Toast.LENGTH_SHORT).show();		
 		}
 	}
 	

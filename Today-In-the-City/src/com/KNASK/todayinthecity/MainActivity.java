@@ -160,16 +160,18 @@ public class MainActivity extends Activity {
         
         String showDate;
         for(Show show : showEvents) {
-            showDate = formatDate.format(show.getDate().getTime());        	
-        	
-        	if(showDate.equals(currentDate)) {
-        		todayShow.add(show);
-        	}
-        	else if(showDate.equals(tomorrowDate)) {
-        		tomorrowShow.add(show);
-        	}
-        	else {
-        		upcomingShow.add(show);
+        	if(show.getDate() != null) {
+	            showDate = formatDate.format(show.getDate().getTime());        	
+	        	
+	        	if(showDate.equals(currentDate)) {
+	        		todayShow.add(show);
+	        	}
+	        	else if(showDate.equals(tomorrowDate)) {
+	        		tomorrowShow.add(show);
+	        	}
+	        	else {
+	        		upcomingShow.add(show);
+	        	}
         	}
         }
         
@@ -187,66 +189,72 @@ public class MainActivity extends Activity {
      */
     private void LoadShowList() {
     	
-    	try {
-	    	ShowDAO showDAO = new ShowDAO();
-//	        BandsDAO bandDAO = new BandsDAO();
+		try {
+			ShowDAO showDAO = new ShowDAO();
+			// BandsDAO bandDAO = new BandsDAO();
+
+			//Show show = null;
+
+			try {
+				showEvents = showDAO.getList(0, 50);
+			} catch (NullPointerException e) {
+				Toast.makeText(getApplicationContext(), "Null Pointer 1",
+						Toast.LENGTH_LONG).show();
+			}
+
+//			try {
+//				Toast.makeText(getApplicationContext(), show.getName(),
+//						Toast.LENGTH_LONG).show();
+//			} catch (NullPointerException e) {
+//				Toast.makeText(getApplicationContext(), "Null Pointer!",
+//						Toast.LENGTH_LONG).show();
+//			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		}
 	        
-	    	Show show = null;
-	    	
-	    	try {
-	    		show = showDAO.get(50);
-	    	} catch(NullPointerException e) {
-	    		Toast.makeText(getApplicationContext(), "Null Pointer 1", Toast.LENGTH_LONG).show();
-	    	}
-	    	
-	    	try {
-	    		Toast.makeText(getApplicationContext(), show.getName(), Toast.LENGTH_LONG).show();
-	    	} catch(NullPointerException e) {
-	    		Toast.makeText(getApplicationContext(), "Null Pointer!", Toast.LENGTH_LONG).show();
-	    	}
-    	} catch(Exception ex) {
-    		ex.printStackTrace();
-   		
-    	}	
-	        
-    		////////////////////////////////////////////////////////////////////////////
-    		///////////////////////////////////////////////////////////////////////////
-    		////////////////////////////////////////////////////////////////////////////
-    		///////////////////////////////////////////////////////////////////////////
-    		// TEST 
-    		String[][] data = {
-  				  {"Crazy Halloween Night!", "2014-11-18 19:30:00", "Algonquin College", "1385 Woodroffe Ave, Ottawa"},
-  				  {"Raging Nathans Finderskeepers and Dead Weights", "2014-11-18 19:30:00", "Mayfair Theatre Ottawa", "1074 Bank Street, Ottawa"},
-  				  {"Loreena McKennitt", "2014-11-19 19:30:00", "Canadian Film Institute", "395 Rue Wellington, Ottawa"},
-  				};
-  		
-	  		for(int i = 0; i < data.length ; i++) {
-	  			Show showEvent = new Show();
-	  			showEvent.setShowID(i);
-	  			showEvent.setName(data[i][0]);
-				showEvent.setDate(Timestamp.valueOf(data[i][1]));
-	
-				Location location = new Location();
-				location.setLocationID(i);
-				location.setName(data[i][2]);
-				location.setAddress(data[i][3]);
-	  			showEvent.setLocation(location);
-	
-	  			showEvents.add(showEvent);
-	  		}
-    		////////////////////////////////////////////////////////////////////////////
-    		///////////////////////////////////////////////////////////////////////////
-    		////////////////////////////////////////////////////////////////////////////
-    		///////////////////////////////////////////////////////////////////////////    		
-	  		////////////////////////////////////////////////////////////////////////////
-    		///////////////////////////////////////////////////////////////////////////	  		
-    		
-        
-	        expListView = (ExpandableListView) findViewById(R.id.expandableListView1);
-	        prepareListData();
-	        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
-	        expListView.setAdapter(listAdapter);
-	        expListView.expandGroup(0);
+		// //////////////////////////////////////////////////////////////////////////
+		// /////////////////////////////////////////////////////////////////////////
+		// //////////////////////////////////////////////////////////////////////////
+		// /////////////////////////////////////////////////////////////////////////
+		// TEST
+//		String[][] data = {
+//				{ "Crazy Halloween Night!", "2014-11-18 19:30:00",
+//						"Algonquin College", "1385 Woodroffe Ave, Ottawa" },
+//				{ "Raging Nathans Finderskeepers and Dead Weights",
+//						"2014-11-18 19:30:00", "Mayfair Theatre Ottawa",
+//						"1074 Bank Street, Ottawa" },
+//				{ "Loreena McKennitt", "2014-11-19 19:30:00",
+//						"Canadian Film Institute", "395 Rue Wellington, Ottawa" }, };
+//
+//		for (int i = 0; i < data.length; i++) {
+//			Show showEvent = new Show();
+//			showEvent.setShowID(i);
+//			showEvent.setName(data[i][0]);
+//			showEvent.setDate(Timestamp.valueOf(data[i][1]));
+//
+//			Location location = new Location();
+//			location.setLocationID(i);
+//			location.setName(data[i][2]);
+//			location.setAddress(data[i][3]);
+//			showEvent.setLocation(location);
+//
+//			showEvents.add(showEvent);
+//		}
+		// //////////////////////////////////////////////////////////////////////////
+		// /////////////////////////////////////////////////////////////////////////
+		// //////////////////////////////////////////////////////////////////////////
+		// /////////////////////////////////////////////////////////////////////////
+		// //////////////////////////////////////////////////////////////////////////
+		// /////////////////////////////////////////////////////////////////////////
+
+		expListView = (ExpandableListView) findViewById(R.id.expandableListView1);
+		prepareListData();
+		listAdapter = new ExpandableListAdapter(this, listDataHeader,
+				listDataChild);
+		expListView.setAdapter(listAdapter);
+		expListView.expandGroup(0);
 	  
     }
     

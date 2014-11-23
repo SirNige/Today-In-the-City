@@ -50,6 +50,12 @@ public class Location implements Serializable {
 		
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
+
 
 	private int locationID = -1;
 	private String name;
