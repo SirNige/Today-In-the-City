@@ -35,6 +35,9 @@ public class MainActivity extends Activity {
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<Show>> listDataChild;
+    
+    public String loginUserName;
+    public String loginUserEmail;
 	
 	// Calling Application class (see application tag in AndroidManifest.xml)
     List<Show> 	showEvents;   
@@ -48,7 +51,16 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		    
+		 //get passed intent 
+        Intent intent = getIntent();
+ 
+        //get message value from intent
+        loginUserName = intent.getStringExtra("LOGINUSER");
+        loginUserEmail = intent.getStringExtra("LOGINEMAIL");
+		
+        if(loginUserName != null)
+        	Toast.makeText(this, "Google User: " + loginUserName + "(" + loginUserEmail + ")", Toast.LENGTH_SHORT).show();	
+        
 		//
 		//showEvents 		= (List<Show>) getApplicationContext(); 	
 		
@@ -96,6 +108,24 @@ public class MainActivity extends Activity {
 
 	};
 		  
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onResume()
+	 */
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onPause()
+	 */
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
+
 	public void nearMe(View view) {
 		Intent i = new Intent(getApplicationContext(), SearchActivity.class);
 		i.putExtra("SHOWEVENT", (ArrayList)showEvents);
@@ -132,8 +162,31 @@ public class MainActivity extends Activity {
 		
 		return true;
 	}
+	
+	
 
-    private void prepareListData() {
+    /* (non-Javadoc)
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		else if (id == R.id.action_login) {
+			Login();
+
+		}			
+		return super.onOptionsItemSelected(item);
+	}
+	
+	public void Login() {
+		Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+		startActivity(i);
+	}
+
+	private void prepareListData() {
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<Show>>();
 
@@ -191,9 +244,7 @@ public class MainActivity extends Activity {
     	
 		try {
 			ShowDAO showDAO = new ShowDAO();
-			// BandsDAO bandDAO = new BandsDAO();
 
-			//Show show = null;
 
 			try {
 				showEvents = showDAO.getList(0, 50);
@@ -202,13 +253,6 @@ public class MainActivity extends Activity {
 						Toast.LENGTH_LONG).show();
 			}
 
-//			try {
-//				Toast.makeText(getApplicationContext(), show.getName(),
-//						Toast.LENGTH_LONG).show();
-//			} catch (NullPointerException e) {
-//				Toast.makeText(getApplicationContext(), "Null Pointer!",
-//						Toast.LENGTH_LONG).show();
-//			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 
