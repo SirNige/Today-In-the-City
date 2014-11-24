@@ -8,10 +8,20 @@ import android.view.MenuItem;
 
 public class ShowsActivity extends Activity {
 
+	private String loginUserName;
+	private String loginUserEmail;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shows);
+		
+		 //get passed intent 
+        Intent intent = getIntent();
+ 
+        //get message value from intent
+        loginUserName = intent.getStringExtra("LOGINUSER");
+        loginUserEmail = intent.getStringExtra("LOGINEMAIL");
 	}
 
 	@Override

@@ -133,8 +133,18 @@ public class MainActivity extends Activity {
 	}
 	
 	public void myShows(View view) {
-		Intent i = new Intent(getApplicationContext(), ShowsActivity.class);
-		startActivity(i);
+		//if it did not login, load login activity
+		if(loginUserName == null) {
+			Login();
+		}
+		else {
+			Intent i = new Intent(getApplicationContext(), ShowsActivity.class);
+		    i.putExtra("LOGINUSER", loginUserName);
+		    i.putExtra("LOGINEMAIL", loginUserEmail);
+			startActivity(i);				
+		}
+		
+
 	}
 
 	@Override
