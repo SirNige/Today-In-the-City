@@ -1,29 +1,15 @@
 package com.KNASK.todayinthecity;
 
 import java.util.Arrays;
+import java.util.List;
 
-//import com.facebook.FacebookException;
-//import com.facebook.Request;
-//import com.facebook.Response;
-//import com.facebook.Session;
-//import com.facebook.SessionState;
-//import com.facebook.model.GraphUser;
-//import com.facebook.widget.LoginButton;
-//import com.facebook.widget.LoginButton.OnErrorListener;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import com.facebook.FacebookException;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -70,27 +56,69 @@ public class LoginActivity extends Activity implements OnClickListener, Connecti
 	private String userName;
 	private String userEmail;
 	
+	//facebook login
+	
 	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// uiHelper = new UiLifecycleHelper(this, statusCallback);
+		// uiHelper.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_login);
 
 		btnSignIn = (SignInButton) findViewById(R.id.btn_sign_in);
 		btnSignOut = (Button) findViewById(R.id.btn_sign_out);
-  
-		// Button click listeners
-        btnSignIn.setOnClickListener(this);
-        btnSignOut.setOnClickListener(this);
-        
-        // Initializing google plus api client
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-	        .addConnectionCallbacks(this)
-	        .addOnConnectionFailedListener(this)
-	        .addApi(Plus.API, new Plus.PlusOptions.Builder().build()) // note the options
-	        .addScope(Plus.SCOPE_PLUS_LOGIN).build();
-	}
 
+		// Button click listeners
+		btnSignIn.setOnClickListener(this);
+		btnSignOut.setOnClickListener(this);
+
+		// Initializing google plus api client
+		mGoogleApiClient = new GoogleApiClient.Builder(this)
+				.addConnectionCallbacks(this)
+				.addOnConnectionFailedListener(this)
+				.addApi(Plus.API, new Plus.PlusOptions.Builder().build()) // note
+																			// the
+																			// options
+				.addScope(Plus.SCOPE_PLUS_LOGIN).build();
+
+		// ///////////////////////////////////////////////////////////////////////////////////
+		// facebook login
+		LoginButton authButton = (LoginButton) findViewById(R.id.authButton);
+		authButton.setReadPermissions(Arrays.asList("public_profile"));
+		// session state call back event
+		authButton.setSessionStatusCallback(new Session.StatusCallback() {
+
+			@Override
+			public void call(Session session, SessionState state, Exception exception) {
+
+				if (session.isOpened()) {
+					Log.i(TAG, "Access Token" + session.getAccessToken());
+					Request.newMeRequest(session, new Request.GraphUserCallback() {
+						@Override
+						public void onCompleted(GraphUser user, Response response) {
+							if (user != null) {
+								Log.i(TAG, "User ID " + user.getId());
+								Log.i(TAG, "Name "	+ user.getName());
+								Log.i(TAG, "User Name "	+ user.getUsername());
+								
+								userName = user.getName();
+								
+								Toast.makeText(getApplicationContext(), "Logged User: " + userName, Toast.LENGTH_LONG).show();
+							}
+						}
+					}).executeAsync();
+				}
+				else if(session.isClosed()){
+		             Toast.makeText(getApplicationContext(), "You are logged out.", Toast.LENGTH_LONG).show();
+		        }
+			}
+		});
+		
+	}
+    
 	/* (non-Javadoc)
 	 * @see com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener#onConnectionFailed(com.google.android.gms.common.ConnectionResult)
 	 */
@@ -116,6 +144,7 @@ public class LoginActivity extends Activity implements OnClickListener, Connecti
 		
 	}
 
+
 	/* (non-Javadoc)
 	 * @see com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks#onConnected(android.os.Bundle)
 	 */
@@ -132,13 +161,7 @@ public class LoginActivity extends Activity implements OnClickListener, Connecti
 	    //if login is succeeded, just disconnect from Google.
 	    signOutFromGplus();
 	    
-	    Intent i = new Intent(this, MainActivity.class);
-	    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	    i.putExtra("LOGINUSER", userName);
-	    i.putExtra("LOGINEMAIL", userEmail);
-	    startActivity(i);
-	    
-	    finish();
+	    LoadMainActivity();
 		
 	}
 
@@ -207,6 +230,10 @@ public class LoginActivity extends Activity implements OnClickListener, Connecti
 	        if (!mGoogleApiClient.isConnecting()) {
 	            mGoogleApiClient.connect();
 	        }
+	    }
+	    else {
+	    	 super.onActivityResult(requestCode, resultCode, data);
+	         Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
 	    }
 	}
 
@@ -302,5 +329,16 @@ public class LoginActivity extends Activity implements OnClickListener, Connecti
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
+	}
+	
+	private void LoadMainActivity() {
+	    Intent i = new Intent(this, MainActivity.class);
+	    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	    i.putExtra("LOGINUSER", userName);
+	    i.putExtra("LOGINEMAIL", userEmail);
+	    startActivity(i);
+	    
+	    finish();		
+		
 	}
 }

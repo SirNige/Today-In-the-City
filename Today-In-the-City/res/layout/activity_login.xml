@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"/>
 
+    
     <Button
         android:id="@+id/btn_sign_out"
         android:layout_width="fill_parent"
@@ -20,4 +21,13 @@
         android:visibility="gone"
         android:layout_marginBottom="10dp"/>
     
+    
+    <com.facebook.widget.LoginButton
+         android:id="@+id/authButton"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentTop="true"
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="55dp" />
+ 
 </RelativeLayout>

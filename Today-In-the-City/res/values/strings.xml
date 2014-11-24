@@ -15,5 +15,7 @@
     <string name="select_bands">Select Bands</string>
     
     <string name="btn_logout_from_google">Logout from Google</string>
+    
+    <string name="facebook_app_id">313343025525992</string>
 
 </resources>
