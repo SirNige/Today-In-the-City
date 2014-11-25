@@ -274,12 +274,12 @@ public class MainActivity extends Activity {
 		// /////////////////////////////////////////////////////////////////////////
 		// TEST
 //		String[][] data = {
-//				{ "Crazy Halloween Night!", "2014-11-18 19:30:00",
+//				{ "Crazy Halloween Night!", "2014-11-24 19:30:00",
 //						"Algonquin College", "1385 Woodroffe Ave, Ottawa" },
 //				{ "Raging Nathans Finderskeepers and Dead Weights",
-//						"2014-11-18 19:30:00", "Mayfair Theatre Ottawa",
+//						"2014-11-25 19:30:00", "Mayfair Theatre Ottawa",
 //						"1074 Bank Street, Ottawa" },
-//				{ "Loreena McKennitt", "2014-11-19 19:30:00",
+//				{ "Loreena McKennitt", "2014-11-25 19:30:00",
 //						"Canadian Film Institute", "395 Rue Wellington, Ottawa" }, };
 //
 //		for (int i = 0; i < data.length; i++) {

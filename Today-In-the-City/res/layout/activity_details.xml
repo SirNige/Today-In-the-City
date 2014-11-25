@@ -160,7 +160,7 @@
 		            android:id="@+id/detailEvent_email"
 		            android:gravity="left"
 		            android:autoLink="email"
-		            android:text="sdlee71@gmail.com" >
+		            android:text=" " >
 		        </TextView>
 		    </TableRow>  
 		     		    
@@ -181,7 +181,7 @@
 		            android:id="@+id/detailEvent_phone"
 		            android:gravity="left"
 		            android:autoLink="phone"
-		            android:text="6139998888" >
+		            android:text=" " >
 		            
 		        </TextView>
 		    </TableRow>   
@@ -202,7 +202,7 @@
 		            android:id="@+id/detailEvent_website"
 		            android:gravity="left"
 		            android:autoLink="web"
-		            android:text="www.algonquincollege.com" >
+		            android:text=" " >
 		        </TextView>
 		    </TableRow>   
 		    		    		    	 
@@ -220,7 +220,7 @@
 		            android:layout_span="2"
 		            android:gravity="left"
 		            android:textColor="@color/wallet_holo_blue_light"		            
-		            android:text="LESS THAN JAKE, BIG D  THE KIDS TABLE, INTERRUPTERS.\nSpectrasonic and punkottawa.com present \nWednesday October 22 @ Ritual Nightclub (137 Besserer St.) \nlicensed 19+ - 7:30pm doors - $22 advance + service charges \ntickets available at Vertigo Records and http://www.spectrasonic.com/event/640283" 
+		            android:text=" " 
 		            >
 		        </TextView>
 		    </TableRow>		    
