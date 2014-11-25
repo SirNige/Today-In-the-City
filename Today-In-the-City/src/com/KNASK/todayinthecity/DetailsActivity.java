@@ -34,7 +34,8 @@ public class DetailsActivity extends Activity {
             
             TextView tvDate = (TextView) findViewById(R.id.detailEvent_showDate);          
             SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            tvDate.setText(formatDate.format(showEvent.getDate().getTime()));
+            if(showEvent.getDate() != null)
+            	tvDate.setText(formatDate.format(showEvent.getDate().getTime()));
             
             
             TextView tvBands = (TextView) findViewById(R.id.detailEvent_Band);  
@@ -50,8 +51,9 @@ public class DetailsActivity extends Activity {
 	            tvBands.setText(sb.toString().substring(0, sb.toString().length()-1));
         	}
             
-            TextView tvLocation = (TextView) findViewById(R.id.detailEvent_locationName);          
-            tvLocation.setText(showEvent.getLocation().getName() + System.getProperty("line.separator") + showEvent.getLocation().getAddress());           
+            TextView tvLocation = (TextView) findViewById(R.id.detailEvent_locationName);    
+            if(showEvent.getLocation() != null)
+            	tvLocation.setText(showEvent.getLocation().getName() + System.getProperty("line.separator") + showEvent.getLocation().getAddress());           
             
             TextView tvCost = (TextView) findViewById(R.id.detailEvent_entranceFee);          
             tvCost.setText(showEvent.getCost());
