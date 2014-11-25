@@ -362,7 +362,7 @@ public class CreateActivity extends Activity implements OnClickListener {
 			BandsDAO bandDAO = new BandsDAO();
 
 			try {
-				listBand = bandDAO.getList(1, 100);
+				listBand = bandDAO.getList(0, 100);
 			} catch (NullPointerException e) {
 				Toast.makeText(getApplicationContext(), "The error has occurred during loading the band list.",
 						Toast.LENGTH_LONG).show();

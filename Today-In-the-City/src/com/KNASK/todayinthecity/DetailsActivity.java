@@ -3,10 +3,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.KNASK.todayinthecityDAO.ShowDAO;
 import com.KNASK.todayinthecitymodel.Band;
 import com.KNASK.todayinthecitymodel.Show;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -94,5 +96,25 @@ public class DetailsActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	/**
+	 * delete this Show
+	 * @param view
+	 */
+	public void deleteShow(View view) {
+		try {
+			ShowDAO showDAO = new ShowDAO();
+			
+			if(showDAO.delete(showEvent.getShowID())) {
+				Toast.makeText(getApplicationContext(), "Show has successfully deleted.", Toast.LENGTH_LONG).show();			
+				//close it
+				finish();
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		}
+
 	}
 }

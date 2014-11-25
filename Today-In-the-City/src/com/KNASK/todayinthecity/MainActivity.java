@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import com.KNASK.todayinthecity.R.menu;
 import com.KNASK.todayinthecityDAO.BandsDAO;
 import com.KNASK.todayinthecityDAO.ShowDAO;
 import com.KNASK.todayinthecitymodel.Band;
@@ -18,8 +19,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.app.Activity;
+import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -30,7 +35,7 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements SearchView.OnQueryTextListener{
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
@@ -41,6 +46,8 @@ public class MainActivity extends Activity {
 	
 	// Calling Application class (see application tag in AndroidManifest.xml)
     List<Show> 	showEvents;   
+
+    SearchView 	searchView;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +81,8 @@ public class MainActivity extends Activity {
         expListView.setOnChildClickListener(myListItemClicked);
         //listener for group heading click
         expListView.setOnGroupClickListener(myListGroupClicked);
-    
+        
+   
 	}
 	
 	//our child listener
@@ -149,31 +157,57 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
+		super.onCreateOptionsMenu(menu);
 		
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        
-        if(searchView != null){
-	        searchView.setOnQueryTextListener(new OnQueryTextListener() {
-	    	    @Override
-	    	    public boolean onQueryTextSubmit(String query) {
-	    			Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-	    			startActivity(i);
-	    	        return true;
-	    	    }
-	
-	    		@Override
-	    		public boolean onQueryTextChange(String arg0) {
-	    			return true;
-	    		}
-	    	});
-        } 
+        searchView = (SearchView) searchItem.getActionView();
+        setupSearchView(searchItem);
 		
 		return true;
 	}
 	
+    private void setupSearchView(MenuItem searchItem) {
+    	 
+//        if (isAlwaysExpanded()) {
+//        	searchView.setIconifiedByDefault(false);
+//        } else {
+//            searchItem.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_IF_ROOM
+//                    | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+//        }
+ 
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        if (searchManager != null) {
+            List<SearchableInfo> searchables = searchManager.getSearchablesInGlobalSearch();
+ 
+            SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
+            for (SearchableInfo inf : searchables) {
+                if (inf.getSuggestAuthority() != null
+                        && inf.getSuggestAuthority().startsWith("applications")) {
+                    info = inf;
+                }
+            }
+            searchView.setSearchableInfo(info);
+        }
+ 
+        searchView.setOnQueryTextListener(this);
+    }
+ 
+    public boolean onQueryTextChange(String newText) {
+
+        return false;
+    }
+ 
+    public boolean onQueryTextSubmit(String query) {
+    	Toast.makeText(getApplicationContext(), "Sorry, Under Construction!!!",
+				Toast.LENGTH_LONG).show();
+        return false;
+    }	
 	
+    protected boolean isAlwaysExpanded() {
+        return false;
+    }
 
     /* (non-Javadoc)
 	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
