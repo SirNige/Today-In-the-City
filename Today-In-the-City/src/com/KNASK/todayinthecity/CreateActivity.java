@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +36,7 @@ import android.net.ParseException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.view.Menu;
@@ -70,6 +72,10 @@ public class CreateActivity extends Activity implements OnClickListener {
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		StrictMode.ThreadPolicy policy = new
+				StrictMode.ThreadPolicy.Builder()
+				.permitAll().build();
+				StrictMode.setThreadPolicy(policy);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create);
 		
@@ -294,7 +300,7 @@ public class CreateActivity extends Activity implements OnClickListener {
 			int genre = ((Spinner) findViewById(R.id.spinnerGenre)).getSelectedItemPosition();
 			showEvent.setGenre(genre);
 			
-			Location location = (Location)((Spinner) findViewById(R.id.spinnerLocation)).getSelectedItem();
+			//Location location = (Location)((Spinner) findViewById(R.id.spinnerLocation)).getSelectedItem();
 			//showEvent.setLocation(location);
 			showEvent.setLocationID(1);
 			
@@ -310,14 +316,14 @@ public class CreateActivity extends Activity implements OnClickListener {
 			try {
 				//insert a record to database
 	
-				int showID = showDAO.create(showEvent);
+				showEvent.setShowID(showDAO.create(showEvent));
 				
 				Toast.makeText(this, "Created a New Show", Toast.LENGTH_SHORT).show();
 			}
 			catch (Exception e) {
 				e.printStackTrace();
 				
-				Toast.makeText(this, "The error has occurred.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Rip.", Toast.LENGTH_SHORT).show();
 			}
 			
 

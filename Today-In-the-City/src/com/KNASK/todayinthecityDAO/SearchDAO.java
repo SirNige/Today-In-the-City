@@ -50,7 +50,7 @@ public class SearchDAO implements ISearchDAO {
 	private XmlMapper xmlMapper = new XmlMapper(f, module);
 	
 	public SearchDAO() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
 		dateFormat.setTimeZone(TimeZone.getTimeZone("EST"));
 		xmlMapper.setDateFormat(dateFormat);
 		xmlMapper.setSerializationInclusion(Include.NON_NULL);

@@ -6,7 +6,11 @@ import java.util.List;
 import java.util.Locale;
 
 import com.KNASK.todayinthecityDAO.BandsDAO;
+import com.KNASK.todayinthecityDAO.LocationDAO;
+import com.KNASK.todayinthecityDAO.SearchDAO;
 import com.KNASK.todayinthecityDAO.ShowDAO;
+import com.KNASK.todayinthecitymodel.Search;
+import com.KNASK.todayinthecitymodel.SearchResult;
 import com.KNASK.todayinthecitymodel.Show;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -33,6 +37,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,6 +56,10 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		StrictMode.ThreadPolicy policy = new
+				StrictMode.ThreadPolicy.Builder()
+				.permitAll().build();
+				StrictMode.setThreadPolicy(policy);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
 			
@@ -121,7 +130,17 @@ public class SearchActivity extends FragmentActivity implements LocationListener
                     // Getting reference to the TextView to set show place
                     TextView tvPlace = (TextView) v.findViewById(R.id.place);
      
-                    Show showEvent = showEvents.get(Integer.parseInt(marker.getSnippet()));
+                    int id = Integer.parseInt(marker.getSnippet());
+                    
+                    Show showEvent = null;
+                    
+                    for(Show show : showEvents) {
+                    	if(show.getShowID() == id) {
+                    		showEvent = show;
+                    		break;
+                    	}
+                    }
+                    
                     
                     // Setting the ShowTitle
                     tvTitle.setText(showEvent.getName());
@@ -146,7 +165,16 @@ public class SearchActivity extends FragmentActivity implements LocationListener
          	   @Override
 
         	   public void onInfoWindowClick(Marker marker) {
-         		   	Show showEvent = showEvents.get(Integer.parseInt(marker.getSnippet()));
+                   int id = Integer.parseInt(marker.getSnippet());
+                   
+                   Show showEvent = null;
+                   
+                   for(Show show : showEvents) {
+                   	if(show.getShowID() == id) {
+                   		showEvent = show;
+                   		break;
+                   	}
+                   }
 				
 					Intent intent = new Intent(SearchActivity.this, DetailsActivity.class);
 					
@@ -238,7 +266,35 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 	
 	// convert address to lng, lat and add markers to map
 	public void addMarkersToMap() {
-		Geocoder geoCoder = new Geocoder(this, Locale.getDefault()); ;
+		Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
+		
+		showEvents = new ArrayList<Show>();
+		
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        
+        // Creating a criteria object to retrieve provider
+        Criteria criteria = new Criteria();
+
+        // Getting the name of the best provider
+        String provider = locationManager.getBestProvider(criteria, true);
+		
+		Location location = locationManager.getLastKnownLocation(provider);
+		
+		Search search = Search.SearchBuilder.create(Search.SearchType.Show).lat(location.getLatitude()).lon(location.getLongitude()).build();
+		
+		SearchDAO searchDAO = new SearchDAO();
+		
+		List<SearchResult> results = searchDAO.search(search);
+		
+		Toast.makeText(getApplicationContext(), "" + results.size(),
+				Toast.LENGTH_LONG).show();
+		
+		LocationDAO locDAO = new LocationDAO();
+		
+		for(SearchResult result : results) {
+			result.getShow().setLocation(locDAO.get(result.getShow().getLocationID()));
+			showEvents.add(result.getShow());
+		}
 		
 		googleMap.clear();
 		
