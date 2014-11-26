@@ -298,8 +298,9 @@ public class CreateActivity extends Activity implements OnClickListener {
 			showEvent.setGenre(genre);
 			
 			int locationID = SaveShowLocation(((EditText)findViewById(R.id.editLocation)).getText().toString().trim(), ((EditText)findViewById(R.id.editAddress)).getText().toString().trim());
-			if(locationID > -1)
+			if(locationID > -1) {
 				showEvent.setLocationID(locationID);	
+			}
 			
 			showEvent.setBands(SelectedBands);
 
