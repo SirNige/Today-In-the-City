@@ -6,10 +6,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 import com.KNASK.todayinthecityDAO.BandsDAO;
 import com.KNASK.todayinthecityDAO.LocationDAO;
@@ -28,6 +31,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ParseException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -156,8 +160,7 @@ public class CreateActivity extends Activity implements OnClickListener {
                         public void onDateSet(DatePicker view, int year,
                                 int monthOfYear, int dayOfMonth) {
                             // Display Selected date in textbox
-                            txtDate.setText((monthOfYear + 1) + "/"
-                                    + dayOfMonth + "/" + year);
+                            txtDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth );
  
                         }
                     }, mYear, mMonth, mDay);
@@ -178,7 +181,7 @@ public class CreateActivity extends Activity implements OnClickListener {
                         public void onTimeSet(TimePicker view, int hourOfDay,
                                 int minute) {
                             // Display Selected time in textbox
-                            txtTime.setText(hourOfDay + ":" + minute);
+                            txtTime.setText(hourOfDay + ":" + minute + ":00");
                         }
                     }, mHour, mMinute, false);
             tpd.show();
@@ -258,45 +261,67 @@ public class CreateActivity extends Activity implements OnClickListener {
 		}
 	}
 	
-	/** Called when the user touches the Create button */
-	public void clickCreateEvent(View view) {
+	/** Called when the user touches the Create button 
+	 * @throws java.text.ParseException */
+	public void clickCreateEvent(View view) throws java.text.ParseException {
 		//validate data
 		if(ValidateShowEntry()) {
+			ShowDAO showDAO = null;
+			try {
+				//create a show DAO
+				showDAO = new ShowDAO();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				
+				Toast.makeText(this, "The error is occurred.", Toast.LENGTH_SHORT).show();
+			}
+
+			
 			//add it in ShowEvent class
 			Show showEvent = new Show();
 			
 			showEvent.setShowID(-1); //Set show ID to -1 to cause the server to re-create the row.
 			showEvent.setName(((EditText)findViewById(R.id.editTitle)).getText().toString().trim());
-			showEvent.setDate(Timestamp.valueOf(((EditText)findViewById(R.id.editDate)).getText().toString().trim() + " " + ((EditText)findViewById(R.id.editTime)).getText().toString().trim()));
+					
+			String date = ((EditText)findViewById(R.id.editDate)).getText().toString().trim();
+			String time = ((EditText)findViewById(R.id.editTime)).getText().toString().trim();
+			
+			SimpleDateFormat tempFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date showDate = tempFormat.parse(date + " " + time);
+
+			showEvent.setDate(showDate);
 			
 			int genre = ((Spinner) findViewById(R.id.spinnerGenre)).getSelectedItemPosition();
 			showEvent.setGenre(genre);
 			
 			Location location = (Location)((Spinner) findViewById(R.id.spinnerLocation)).getSelectedItem();
-			showEvent.setLocation(location);
+			//showEvent.setLocation(location);
+			showEvent.setLocationID(1);
 			
 			showEvent.setBands(SelectedBands);
 
 			
 			showEvent.setCost(((EditText)findViewById(R.id.editPrice)).getText().toString().trim());
-			showEvent.setContactEmail(((EditText)findViewById(R.id.editEmail)).getText().toString().trim());
-			showEvent.setContactPhone(((EditText)findViewById(R.id.editPhone)).getText().toString().trim());
-			showEvent.setWebSite(((EditText)findViewById(R.id.editWebsite)).getText().toString().trim());
+//			showEvent.setContactEmail(((EditText)findViewById(R.id.editEmail)).getText().toString().trim());
+//			showEvent.setContactPhone(((EditText)findViewById(R.id.editPhone)).getText().toString().trim());
+//			showEvent.setWebSite(((EditText)findViewById(R.id.editWebsite)).getText().toString().trim());
 			showEvent.setDescription(((EditText)findViewById(R.id.editDescription)).getText().toString().trim());
 			
-			//insert a record to database
-			ShowDAO showDAO = new ShowDAO();
-			int showID = showDAO.create(showEvent);
-
-			
-//			Band band = (Band)((Spinner) findViewById(R.id.spinnerBand)).getSelectedItem();
-//			showEvent.setBand(band);
-
-
+			try {
+				//insert a record to database
 	
-			//showEvents.addShowEvent(showEvent);
+				int showID = showDAO.create(showEvent);
+				
+				Toast.makeText(this, "Created a New Show", Toast.LENGTH_SHORT).show();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				
+				Toast.makeText(this, "The error is occurred.", Toast.LENGTH_SHORT).show();
+			}
 			
-			Toast.makeText(this, "Created a New Show", Toast.LENGTH_SHORT).show();
+
 		}
 	}
 	

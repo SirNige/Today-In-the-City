@@ -1,8 +1,9 @@
 package com.KNASK.todayinthecitymodel;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Search {
+public class Search implements Serializable {
 	public enum SearchType {Show, Location}
 	
 	public Date getBeforeDate() {
@@ -32,6 +33,36 @@ public class Search {
 	public SearchType getSearchType() {
 		return searchType;
 	}
+	
+	public void setBeforeDate(Date beforeDate) {
+		this.beforeDate = beforeDate;
+	}
+
+	public void setAfterDate(Date afterDate) {
+		this.afterDate = afterDate;
+	}
+
+	public void setGenres(int[] genres) {
+		this.genres = genres;
+	}
+
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
+
+	public void setLon(double lon) {
+		this.lon = lon;
+	}
+
+	public void setWithinDistance(double withinDistance) {
+		this.withinDistance = withinDistance;
+	}
+
+	public void setSearchType(SearchType searchType) {
+		this.searchType = searchType;
+	}
+
+	public Search() {super();}
 
 	private Search(SearchType searchType, Date beforeDate, Date afterDate, int[] genres, double lat, double lon, double withinDistance) {
 		this.searchType = searchType;
@@ -50,44 +81,50 @@ public class Search {
 	private double lon = 99;
 	private double withinDistance;
 	private SearchType searchType;
+	private static final long serialVersionUID = 1L;
 	
 	public static class SearchBuilder {
-		public SearchBuilder create(SearchType thisType) {
+		public static SearchBuilder create(SearchType thisType) {
 			return new SearchBuilder(thisType);
 		}
 		
 		public SearchBuilder beforeDate(Date beforeDate) {
-			this.beforeDate = beforeDate;
+			if (this.searchType == SearchType.Location)
+				return this;
 			
+			this.beforeDate = beforeDate;
 			return this;
 		}
 		
 		public SearchBuilder afterDate(Date afterDate) {
-			this.afterDate = afterDate;
+			if (this.searchType == SearchType.Location)
+				return this;
 			
+			this.afterDate = afterDate;
 			return this;
 		}
 		
 		public SearchBuilder genres(int[] genres) {
-			this.genres = genres;
+			if (this.searchType == SearchType.Location)
+				return this;
 			
+			this.genres = genres;
 			return this;
 		}
 		
 		public SearchBuilder lat(double lat) {
 			this.lat = lat;
-			
 			return this;
 		}
 		
 		public SearchBuilder lon(double lon) {
 			this.lon = lon;
-			
 			return this;
 		}
 		
 		public SearchBuilder withinDistance(double withinDistance) {
-			this.withinDistance = withinDistance;
+			if ((withinDistance > 100000) || (withinDistance < 0))
+				this.withinDistance = 100000;
 			
 			return this;
 		}
@@ -105,7 +142,7 @@ public class Search {
 		private int[] genres;
 		private double lat = 99;
 		private double lon = 99;
-		private double withinDistance;
+		private double withinDistance = 100000;
 		private SearchType searchType;
 	}
 }

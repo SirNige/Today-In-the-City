@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 
-public class Fan implements Serializable {
+public class Fan  implements Serializable {
 	public int getFanID() {
 		return fanID;
 	}

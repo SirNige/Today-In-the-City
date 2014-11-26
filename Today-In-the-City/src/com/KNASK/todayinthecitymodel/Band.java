@@ -3,6 +3,7 @@ package com.KNASK.todayinthecitymodel;
 import java.io.Serializable;
 import java.util.List;
 
+
 public class Band implements Serializable {
 	public Band(){}
 	
@@ -54,11 +55,14 @@ public class Band implements Serializable {
 		return false;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return name;
 	}
-
+	
 
 	private int bandID = -1;
 	private String name;

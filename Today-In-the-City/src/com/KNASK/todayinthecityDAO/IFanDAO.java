@@ -1,6 +1,7 @@
 package com.KNASK.todayinthecityDAO;
-import com.KNASK.todayinthecitymodel.Fan;
 import java.util.List;
+
+import com.KNASK.todayinthecitymodel.Fan;
 
 public interface IFanDAO {
 	public int create(Fan fan);

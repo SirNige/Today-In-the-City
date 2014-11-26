@@ -1,6 +1,7 @@
 package com.KNASK.todayinthecityDAO;
-import com.KNASK.todayinthecitymodel.Location;
 import java.util.List;
+
+import com.KNASK.todayinthecitymodel.Location;
 
 public interface ILocationDAO {
 	public int create(Location location);

@@ -1,12 +1,13 @@
 package com.KNASK.todayinthecitymodel;
 
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Show implements Serializable {
+public class Show  implements Serializable {
 	public Show () {
 		genreMap = new HashMap<Integer, String>();
 		genreMap.put(0, "Alternative/Indie");
@@ -116,48 +117,51 @@ public class Show implements Serializable {
 		
 		return false;
 	}
-	
+
 	public String getContactEmail() {
-		return contactEmail;
+		return ContactEmail;
 	}
 
 	public void setContactEmail(String contactEmail) {
-		this.contactEmail = contactEmail;
+		ContactEmail = contactEmail;
 	}
 
 	public String getContactPhone() {
-		return contactPhone;
+		return ContactPhone;
 	}
 
 	public void setContactPhone(String contactPhone) {
-		this.contactPhone = contactPhone;
+		ContactPhone = contactPhone;
 	}
 
 	public String getWebSite() {
-		return webSite;
+		return WebSite;
 	}
 
 	public void setWebSite(String webSite) {
-		this.webSite = webSite;
+		WebSite = webSite;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return name;
 	}
+	
 
 	private int showID = -1;
 	private int fanID;
 	private int locationID;
 	private String name;
-	private Date date;
+	private Date date;	
 	private String cost;
 	private int genre;
 	private String description;
-	private String 	contactEmail;
-	private String 	contactPhone;
-	private String 	webSite;
-	
+	private String ContactEmail;
+	private String ContactPhone;
+	private String WebSite;
 
 	private Location location;
 	private List<Band> bands;

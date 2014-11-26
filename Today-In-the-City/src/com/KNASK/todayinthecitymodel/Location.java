@@ -51,11 +51,14 @@ public class Location implements Serializable {
 		return false;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return name;
 	}
-
+	
 
 	private int locationID = -1;
 	private String name;
