@@ -36,9 +36,9 @@ public class DetailsActivity extends Activity {
             
             TextView tvDate = (TextView) findViewById(R.id.detailEvent_showDate);          
             SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            if(showEvent.getDate() != null)
+            if(showEvent.getDate() != null) {
             	tvDate.setText(formatDate.format(showEvent.getDate().getTime()));
-            
+            }
             
             TextView tvBands = (TextView) findViewById(R.id.detailEvent_Band);  
         	StringBuilder sb = new StringBuilder();

@@ -40,8 +40,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class ShowDAO implements IShowDAO {
-	//http://rnguy.no-ip.biz:8080/com.KNASK.TodayInTheCity.11.25.16.38/rest/show
-	private static final String REST_SERVICE_URL = "http://rnguy.no-ip.biz:8080/com.KNASK.TodayInTheCity.11.25.20.13/rest/show";
+	private static final String REST_SERVICE_URL = "http://rnguy.no-ip.biz:8080/com.KNASK.TodayInTheCity.11.25.21.42/rest/show";
 	private static final DefaultHttpClient httpClient = new DefaultHttpClient();
 	
 	private XmlFactory f = new XmlFactory(new InputFactoryImpl(), new OutputFactoryImpl());

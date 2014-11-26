@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.KNASK.todayinthecity.R.menu;
 import com.KNASK.todayinthecityDAO.BandsDAO;
+import com.KNASK.todayinthecityDAO.LocationDAO;
 import com.KNASK.todayinthecityDAO.ShowDAO;
 import com.KNASK.todayinthecitymodel.Band;
 import com.KNASK.todayinthecitymodel.Location;
@@ -288,10 +289,13 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
     	
 		try {
 			ShowDAO showDAO = new ShowDAO();
-
+			LocationDAO locDAO = new LocationDAO();
 
 			try {
 				showEvents = showDAO.getList(0, 50);
+				for(Show show : showEvents) {
+					show.setLocation(locDAO.get(show.getLocationID()));
+				}
 			} catch (NullPointerException e) {
 				Toast.makeText(getApplicationContext(), "Null Pointer 1",
 						Toast.LENGTH_LONG).show();

@@ -28,7 +28,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class FanDAO implements IFanDAO {
 	
-	private static final String REST_SERVICE_URL = "http://rnguy.no-ip.biz:8080/com.KNASK.TodayInTheCity.11.25.18.56/rest/fan";
+	private static final String REST_SERVICE_URL = "http://rnguy.no-ip.biz:8080/com.KNASK.TodayInTheCity.11.25.21.42/rest/fan";
 	private static final XmlFactory f = new XmlFactory(new InputFactoryImpl(), new OutputFactoryImpl());
 	private static final JacksonXmlModule module = new JacksonXmlModule();
 	private static final XmlMapper xmlMapper = new XmlMapper(f, module);

@@ -43,7 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class SearchActivity extends FragmentActivity implements LocationListener{
+public class SearchActivity extends FragmentActivity implements LocationListener {
 
 	private GoogleMap googleMap;
 	
@@ -55,7 +55,7 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 		setContentView(R.layout.activity_search);
 			
 		showEvents = (ArrayList<Show>) getIntent().getSerializableExtra("SHOWEVENT");
-		LoadShowList();
+		//LoadShowList();
 		
         // Getting Google Play availability status
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
@@ -128,7 +128,9 @@ public class SearchActivity extends FragmentActivity implements LocationListener
      
                     // Setting the ShowDate
                     SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    tvDate.setText(formatDate.format(showEvent.getDate().getTime()));
+                    if(showEvent.getDate() != null) {
+                    	tvDate.setText(formatDate.format(showEvent.getDate()));
+                    }
      
                     // Setting the LocationName
                     tvPlace.setText(showEvent.getLocation().getName());
@@ -246,12 +248,17 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 	    if (showEvents.size() > 0) {
 	    	for (Show showEvent: showEvents ) {
 	            try {
-	                addressList = geoCoder.getFromLocationName(showEvent.getLocation().getAddress(), 1);
-	                if (addressList == null || addressList.isEmpty() || addressList.equals("")) {
-	                    addressList = geoCoder.getFromLocationName("Algonquin College", 1);
-	                }
-	                latitude = addressList.get(0).getLatitude();
-	                longitude = addressList.get(0).getLongitude();
+	            	if(showEvent.getLocation() == null || (showEvent.getLocation().getLat() == 0.0 || showEvent.getLocation().getLat() == 0.0)) {
+		                addressList = geoCoder.getFromLocationName(showEvent.getLocation().getAddress(), 1);
+		                if (addressList == null || addressList.isEmpty() || addressList.equals("")) {
+		                    addressList = geoCoder.getFromLocationName("Algonquin College", 1);
+		                }
+		                latitude = addressList.get(0).getLatitude();
+		                longitude = addressList.get(0).getLongitude();
+	            	} else {
+		                latitude = showEvent.getLocation().getLat();
+		                longitude = showEvent.getLocation().getLon();
+	            	}
 	                           
 	            	googleMap.addMarker(new MarkerOptions()
 	                          .position(new LatLng(latitude, longitude))

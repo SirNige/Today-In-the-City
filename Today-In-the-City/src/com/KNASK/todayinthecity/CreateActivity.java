@@ -281,7 +281,6 @@ public class CreateActivity extends Activity implements OnClickListener {
 			//add it in ShowEvent class
 			Show showEvent = new Show();
 			
-			showEvent.setShowID(-1); //Set show ID to -1 to cause the server to re-create the row.
 			showEvent.setName(((EditText)findViewById(R.id.editTitle)).getText().toString().trim());
 					
 			String date = ((EditText)findViewById(R.id.editDate)).getText().toString().trim();
@@ -318,7 +317,7 @@ public class CreateActivity extends Activity implements OnClickListener {
 			catch (Exception e) {
 				e.printStackTrace();
 				
-				Toast.makeText(this, "The error is occurred.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "The error has occurred.", Toast.LENGTH_SHORT).show();
 			}
 			
 
@@ -364,16 +363,6 @@ public class CreateActivity extends Activity implements OnClickListener {
 	        bHasContent = true;
 	    }
 	    return bHasContent;
-	}
-	
-	/**
-	 * 
-	 * @return - return the show ID after insert a record
-	 */
-	private int InsertShowData() {
-		int showID = 0;
-		
-		return showID;
 	}
 	
 	/**
