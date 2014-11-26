@@ -63,7 +63,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         
         //display location of show
         TextView txtListChild_Loc = (TextView) convertView.findViewById(R.id.lblListItem_loc);
-        txtListChild_Loc.setText(childShow.getLocation().getName());
+        if(childShow.getLocation() != null) {
+      	  txtListChild_Loc.setText(childShow.getLocation().getName());
+        } else {
+        	txtListChild_Loc.setText(" ");
+        }
         
         return convertView;
     }

@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import com.KNASK.todayinthecityDAO.BandsDAO;
@@ -32,6 +33,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.ParseException;
 import android.net.Uri;
 import android.os.Bundle;
@@ -95,13 +98,7 @@ public class CreateActivity extends Activity implements OnClickListener {
 		
         /////////////////////////////////////////////////////////////////////////////////////////////
 		//Load location list and set the values up at spinner
-		Spinner spinnerLoc = (Spinner) findViewById(R.id.spinnerLocation);
-		
-		LoadLocationList();
 
-		ArrayAdapter<Location> dataAdapterLoc = new ArrayAdapter<Location>(this, android.R.layout.simple_spinner_item, listLoc);
-		dataAdapterLoc.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerLoc.setAdapter(dataAdapterLoc);
 		
         /////////////////////////////////////////////////////////////////////////////////////////////
 		//Load band list and set the values up at spinner
@@ -300,9 +297,9 @@ public class CreateActivity extends Activity implements OnClickListener {
 			int genre = ((Spinner) findViewById(R.id.spinnerGenre)).getSelectedItemPosition();
 			showEvent.setGenre(genre);
 			
-			//Location location = (Location)((Spinner) findViewById(R.id.spinnerLocation)).getSelectedItem();
-			//showEvent.setLocation(location);
-			showEvent.setLocationID(1);
+			int locationID = SaveShowLocation(((EditText)findViewById(R.id.editLocation)).getText().toString().trim(), ((EditText)findViewById(R.id.editAddress)).getText().toString().trim());
+			if(locationID > -1)
+				showEvent.setLocationID(locationID);	
 			
 			showEvent.setBands(SelectedBands);
 
@@ -349,6 +346,16 @@ public class CreateActivity extends Activity implements OnClickListener {
 		//check if time is empty
 		if(!hasContent((EditText) findViewById(R.id.editTime))) {
 			Toast.makeText(this, "Enter the time of show.", Toast.LENGTH_SHORT).show();
+			return false;
+		}	
+		//check if time is empty
+		if(!hasContent((EditText) findViewById(R.id.editLocation))) {
+			Toast.makeText(this, "Enter the name of location.", Toast.LENGTH_SHORT).show();
+			return false;
+		}
+		//check if time is empty
+		if(!hasContent((EditText) findViewById(R.id.editAddress))) {
+			Toast.makeText(this, "Enter the address of location.", Toast.LENGTH_SHORT).show();
 			return false;
 		}	
 		
@@ -558,7 +565,41 @@ public class CreateActivity extends Activity implements OnClickListener {
 		}
 	}
 	
-	
+	private int SaveShowLocation(String name, String address) {
+		int id = -1;
+		
+		//to get long/lat
+		Geocoder geoCoder = new Geocoder(this, Locale.getDefault()); ;
+		
+	    List<Address> addressList;
+	    Double latitude, longitude;
+	    try {
+	        addressList = geoCoder.getFromLocationName(address, 1);
+	        if (addressList == null || addressList.isEmpty() || addressList.equals("")) {
+	            addressList = geoCoder.getFromLocationName("Algonquin College", 1);
+	        }
+	        latitude = addressList.get(0).getLatitude();
+	        longitude = addressList.get(0).getLongitude();
+	        
+	        Location location = new Location();
+	        
+	        location.setName(name);
+	        location.setAddress(address);
+	        location.setLon(longitude);
+	        location.setLat(latitude);
+	        
+	        LocationDAO locationDAO = new LocationDAO();
+	        
+	        id = locationDAO.create(location);
+	        
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+            Toast.makeText(this, "The error is occurred during inserting new Location.", Toast.LENGTH_SHORT).show();
+        } // end catch
+		
+		return id;
+	}
 }
 
 

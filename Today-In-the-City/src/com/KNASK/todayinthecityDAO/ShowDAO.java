@@ -161,7 +161,7 @@ public class ShowDAO implements IShowDAO {
 			HttpDelete postRequest = new HttpDelete(REST_SERVICE_URL + "/" + id);
 			HttpResponse response = httpClient.execute(postRequest);
 			
-			success = response.getStatusLine().getStatusCode() == 201;
+			success = response.getStatusLine().getStatusCode() == 200;
 			
 		} catch (IOException e) {
 			e.printStackTrace();

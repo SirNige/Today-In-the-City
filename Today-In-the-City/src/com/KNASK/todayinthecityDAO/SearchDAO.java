@@ -68,8 +68,11 @@ public class SearchDAO implements ISearchDAO {
 			HttpResponse response = httpClient.execute(postRequest);
 			
 			//System.out.println(EntityUtils.toString(response.getEntity()));
-
-			searchList = xmlMapper.readValue(EntityUtils.toString(response.getEntity()), new TypeReference<List<SearchResult>>() {});
+			try	{
+				searchList = xmlMapper.readValue(EntityUtils.toString(response.getEntity()), new TypeReference<List<SearchResult>>() {});
+			} catch(IllegalArgumentException e) {
+				
+			}
 	        
 		} catch (IOException e) {
 			e.printStackTrace();

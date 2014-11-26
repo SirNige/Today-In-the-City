@@ -24,5 +24,6 @@
     <string name="btn_logout_from_google">Logout from Google</string>
     
     <string name="facebook_app_id">313343025525992</string>
+    <string name="action_refresh">Refresh List</string>
 
 </resources>

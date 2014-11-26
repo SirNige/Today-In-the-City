@@ -1,6 +1,7 @@
 package com.KNASK.todayinthecity;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,9 +12,12 @@ import java.util.List;
 import com.KNASK.todayinthecity.R.menu;
 import com.KNASK.todayinthecityDAO.BandsDAO;
 import com.KNASK.todayinthecityDAO.LocationDAO;
+import com.KNASK.todayinthecityDAO.SearchDAO;
 import com.KNASK.todayinthecityDAO.ShowDAO;
 import com.KNASK.todayinthecitymodel.Band;
 import com.KNASK.todayinthecitymodel.Location;
+import com.KNASK.todayinthecitymodel.Search;
+import com.KNASK.todayinthecitymodel.SearchResult;
 import com.KNASK.todayinthecitymodel.Show;
 
 import android.os.Bundle;
@@ -218,11 +222,17 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
-		}
-		else if (id == R.id.action_login) {
+		} else if (id == R.id.action_login) {
 			Login();
 
-		}			
+		} else if (id == R.id.action_refresh) {
+			try {
+				RefreshList();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
+		}
 		return super.onOptionsItemSelected(item);
 	}
 	
@@ -290,15 +300,21 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
 		try {
 			ShowDAO showDAO = new ShowDAO();
 			LocationDAO locDAO = new LocationDAO();
-
-			try {
-				showEvents = showDAO.getList(0, 50);
-				for(Show show : showEvents) {
-					show.setLocation(locDAO.get(show.getLocationID()));
-				}
-			} catch (NullPointerException e) {
-				Toast.makeText(getApplicationContext(), "Null Pointer 1",
-						Toast.LENGTH_LONG).show();
+			
+			/*Search search = Search.SearchBuilder.create(Search.SearchType.Show).afterDate(new Date()).lat(45).lon(-75).build();
+			
+			SearchDAO searchDAO = new SearchDAO();
+			
+			List<SearchResult> results = searchDAO.search(search);
+			
+			for(SearchResult result : results) {
+				showEvents.add(result.getShow());
+			}*/
+			
+			showEvents = showDAO.getList(80, 20);
+			
+			for(Show show : showEvents) {
+				show.setLocation(locDAO.get(show.getLocationID()));
 			}
 
 		} catch (Exception ex) {
@@ -350,6 +366,54 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
 	  
     }
     
-    
+    private void RefreshList() throws java.text.ParseException {
+		String[][] data = {
+				{ "Crazy Halloween Night!", "2014-11-27 19:30:00",
+						"Algonquin College", "1385 Woodroffe Ave, Ottawa" },
+				{ "Raging Nathans Finderskeepers and Dead Weights",
+						"2014-11-27 19:30:00", "Mayfair Theatre Ottawa",
+						"1074 Bank Street, Ottawa" },
+				{ "Loreena McKennitt", "2014-11-28 19:30:00",
+						"Canadian Film Institute", "395 Rue Wellington, Ottawa" }, 
+				{ "Dierks Bentley-Riser Tour 2014", "2014-12-01 9:30:00",
+					"Canadian Tire Centre (Scotiabank Place)", "1000 Palladium Dr, Ottawa, ON K2V 1A5" }, 
+				{ "Skydiggers", "2014-12-25 20:00:00",
+					"National Arts Centre", "53 Elgin St, Ottawa, ON K1P 5W1" }, 
+			};
+		
+		for (int i = 0; i < data.length; i++) {
+			Show showEvent = new Show();
+			showEvent.setShowID(i);
+			showEvent.setName(data[i][0]);
+			SimpleDateFormat tempFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date showDate = tempFormat.parse(data[i][1]);
+			showEvent.setDate(showDate);
+		
+			Location location = new Location();
+			location.setLocationID(i);
+			location.setName(data[i][2]);
+			location.setAddress(data[i][3]);
+			showEvent.setLocation(location);
+		
+			showEvents.add(showEvent);
+		}
+		 //////////////////////////////////////////////////////////////////////////
+		 /////////////////////////////////////////////////////////////////////////
+		 //////////////////////////////////////////////////////////////////////////
+		 /////////////////////////////////////////////////////////////////////////
+		 //////////////////////////////////////////////////////////////////////////
+		 /////////////////////////////////////////////////////////////////////////
+		
+		expListView = (ExpandableListView) findViewById(R.id.expandableListView1);
+	
+		
+		prepareListData();
+		listAdapter = new ExpandableListAdapter(this, listDataHeader,
+				listDataChild);
+		expListView.setAdapter(listAdapter);
+		expListView.expandGroup(0);    	
+		expListView.expandGroup(1);    	
+		expListView.expandGroup(2);    	
+    }
    
 }

@@ -60,17 +60,41 @@
 		    
 		   	<!-- Location List (this list should be come from database -->		    
 		    <TextView
-		        android:id="@+id/textView11"
+		        android:id="@+id/textView2"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_weight="0"
-		        android:text="Location:" />
+		        android:text="Location Name:"
+		        android:layout_weight="0" />
 		
+		    <EditText
+		        android:id="@+id/editLocation"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="0"
+		        android:ems="10"/>
+	
+		    <!-- address of location, at least number of house and street name 	-->	    		    
+		    <TextView
+		        android:id="@+id/textView3"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Location Address:"
+		        android:layout_weight="0" />
+		
+		    <EditText
+		        android:id="@+id/editAddress"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="0"
+		        android:ems="10"
+		        android:inputType="textPostalAddress" />
+		        		        	
+		    <!-- 
 		    <Spinner
 		        android:id="@+id/spinnerLocation"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content" />
-		
+		 	-->
 
 		    <!-- Genre  -->		    
 		    <TextView

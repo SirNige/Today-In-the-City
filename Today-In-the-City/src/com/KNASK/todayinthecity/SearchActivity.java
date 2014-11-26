@@ -286,9 +286,6 @@ public class SearchActivity extends FragmentActivity implements LocationListener
 		
 		List<SearchResult> results = searchDAO.search(search);
 		
-		Toast.makeText(getApplicationContext(), "" + results.size(),
-				Toast.LENGTH_LONG).show();
-		
 		LocationDAO locDAO = new LocationDAO();
 		
 		for(SearchResult result : results) {
