@@ -320,7 +320,7 @@ public class CreateActivity extends Activity implements OnClickListener {
 			catch (Exception e) {
 				e.printStackTrace();
 				
-				Toast.makeText(this, "Rip.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Error while creating show.", Toast.LENGTH_SHORT).show();
 			}
 			
 
@@ -598,7 +598,7 @@ public class CreateActivity extends Activity implements OnClickListener {
             Toast.makeText(this, "The error is occurred during inserting new Location.", Toast.LENGTH_SHORT).show();
         } // end catch
 		
-		return id;
+		return 1;
 	}
 }
 
